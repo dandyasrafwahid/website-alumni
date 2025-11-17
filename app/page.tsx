@@ -14,9 +14,9 @@ export default function Home() {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* Konten utama halaman */}
-      <div className="drawer-content flex flex-col">
+      <div className="drawer-content flex flex-col pt-16">
         {/* Navbar atas — tetap (fixed) di bagian atas */}
-        <div className="navbar bg-white w-full px-8 fixed">
+        <div className="navbar bg-white w-full px-8 fixed top-0 left-0 z-50">
           {/* Tombol hamburger hanya tampil di layar kecil */}
           <div className="flex-none lg:hidden">
             <label
@@ -84,12 +84,12 @@ export default function Home() {
           </div>
 
           {/* Bagian kanan navbar: tombol Sign in / Register */}
-          <div className="navbar-end gap-3">
-            <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-3 py-1 text-base text-[#1E1E1E]">
+          <div className="navbar-end gap-5">
+            <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-5 py-1 text-base text-[#1E1E1E]">
               Sign in
             </button>
             {/* Perbaikan: tambahkan spasi sebelum kelas utility tambahan untuk tombol Register */}
-            <button className="rounded-lg bg-[#2C2C2C] border px-3 py-1 text-base text-[#F5F5F5] btn btn-ghost btn-circle">
+            <button className="rounded-lg bg-[#2C2C2C] px-12 py-1 text-base text-[#F5F5F5] btn btn-ghost btn-circle ">
               Register
             </button>
           </div>
@@ -157,16 +157,64 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Bagian hero tambahan dengan gambar dan teks */}
+        <div className="hero bg-base-200 min-h-screen">
+          <div className="hero-content flex-col lg:flex-row">
+            <Image
+              src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+              alt="Hero image"
+              width={380}
+              height={260}
+              className="max-w-sm rounded-lg shadow-2xl"
+              unoptimized
+            />
+            <div>
+              <h1 className="text-5xl font-bold">Box Office News!</h1>
+              <p className="py-6">
+                Provident cupiditate voluptatem et in. Quaerat fugiat ut
+                assumenda excepturi exercitationem quasi. In deleniti eaque aut
+                repudiandae et a id nisi.
+              </p>
+              <button className="btn btn-primary">Get Started</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="hero bg-base-200 min-h-screen">
+          <div className="hero-content flex-col lg:flex-row-reverse">
+            <Image
+              src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+              alt="Hero image"
+              width={380}
+              height={260}
+              className="max-w-sm rounded-lg shadow-2xl"
+              unoptimized
+            />
+            <div>
+              <h1 className="text-5xl font-bold">Box Office News!</h1>
+              <p className="py-6">
+                Provident cupiditate voluptatem et in. Quaerat fugiat ut
+                assumenda excepturi exercitationem quasi. In deleniti eaque aut
+                repudiandae et a id nisi.
+              </p>
+              <button className="btn btn-primary">Get Started</button>
+            </div>
+          </div>
+        </div>
+
         {/* Bagian konten tambahan di bawah hero — tampilkan kartu secara horizontal */}
         <div className="bg-white flex justify-center">
           <div className="flex flex-row gap-8 px-8 py-12 items-start">
             {/* Card 1 */}
-            <div className="card bg-base-100 w-80 shadow-sm">
+            <div className="card bg-[#354E96] w-80 shadow-sm">
               <figure>
-                <img
+                <Image
                   src="/DSC09820.JPG"
                   alt="Alumni 1"
+                  width={320}
+                  height={176}
                   className="object-cover h-44 w-full"
+                  unoptimized
                 />
               </figure>
               <div className="card-body">
@@ -182,12 +230,62 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div className="card bg-base-100 w-80 shadow-sm">
+            <div className="card bg-[#354E96] w-80 shadow-sm">
               <figure>
-                <img
+                <Image
                   src="/DSC09820.JPG"
                   alt="Alumni 2"
+                  width={320}
+                  height={176}
                   className="object-cover h-44 w-full"
+                  unoptimized
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title">Card Title</h2>
+                <p>
+                  A card component has a figure, a body part, and inside body
+                  there are title and actions parts
+                </p>
+                <div className="card-actions justify-end">
+                  <button className="btn btn-primary">Title</button>
+                </div>
+              </div>
+            </div>
+            {/* Card 3 */}
+            <div className="bg-[#354E96] w-80 shadow-sm">
+              <figure>
+                <Image
+                  src="/DSC09820.JPG"
+                  alt="Alumni 1"
+                  width={320}
+                  height={176}
+                  className="object-cover h-44 w-full"
+                  unoptimized
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title">Card Title</h2>
+                <p>
+                  A card component has a figure, a body part, and inside body
+                  there are title and actions parts
+                </p>
+                <div className="card-actions justify-end">
+                  <button className="btn btn-primary">Title</button>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4 */}
+            <div className="card bg-[#354E96] w-80 shadow-sm">
+              <figure>
+                <Image
+                  src="/DSC09820.JPG"
+                  alt="Alumni 2"
+                  width={320}
+                  height={176}
+                  className="object-cover h-44 w-full"
+                  unoptimized
                 />
               </figure>
               <div className="card-body">
@@ -205,7 +303,7 @@ export default function Home() {
         </div>
 
         {/* Footer halaman dengan dua bagian */}
-        <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+        <footer className="footer sm:footer-horizontal bg-[#1E3A8A] text-white p-10">
           <nav>
             <h6 className="footer-title">Services</h6>
             <a className="link link-hover">Branding</a>
@@ -227,18 +325,15 @@ export default function Home() {
             <a className="link link-hover">Cookie policy</a>
           </nav>
         </footer>
-        <footer className="footer bg-base-200 text-base-content border-base-300 border-t px-10 py-4">
-          <aside className="grid-flow-col items-center">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              fillRule="evenodd"
-              clipRule="evenodd"
-              className="fill-current">
-              <path d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path>
-            </svg>
+        <footer className="footer bg-[#1E3A8A] text-white border-t border-[#2A4A86] px-10 py-4">
+          <aside className="flex items-center gap-4">
+            <Image
+              src="/unhas-logo.png"
+              alt="Unhas Logo"
+              width={48}
+              height={48}
+              priority
+            />
             <p>
               DEPARTEMEN TEKNIK INFORMATIKA
               <br />
