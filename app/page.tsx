@@ -64,9 +64,9 @@ export default function Home() {
 
           {/* Menu navigasi tengah */}
           <div className="navbar-center">
-            <ul className="menu menu-horizontal text-black font-medium text-xl">
+            <ul className="menu menu-horizontal text-black font-medium text-xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-black">
               <li>
-                <span className="font-extrabold text-[#1E3A8A]">Home</span>
+                <span className="font-extrabold text-[#1E3A8A]" >Home </span>
               </li>
               <li>
                 <span>Alumni</span>
@@ -85,13 +85,11 @@ export default function Home() {
 
           {/* Bagian kanan navbar: tombol Sign in / Register */}
           <div className="navbar-end gap-5">
-            <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-5 py-1 text-base text-[#1E1E1E]">
-              Sign in
-            </button>
-            {/* Perbaikan: tambahkan spasi sebelum kelas utility tambahan untuk tombol Register */}
-            <button className="rounded-lg bg-[#2C2C2C] px-12 py-1 text-base text-[#F5F5F5] btn btn-ghost btn-circle ">
-              Register
-            </button>
+            <a href="/login">
+              <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-5 py-1 text-base text-[#1E1E1E]">
+                login
+              </button>
+            </a>
           </div>
         </div>
 
@@ -101,12 +99,12 @@ export default function Home() {
             <div className="flex flex-row px-16 gap-x-32">
               {/* Kolom teks kiri — judul, deskripsi, dan tombol aksi */}
               <div className="flex flex-col flex-1 gap-y-16">
-                <span className="font-bold text-5xl">
+                <span className="font-bold text-5xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-2xl">
                   Website Resmi <br /> Alumni Teknik Informatika Universitas
                   Hasanuddin
                 </span>
 
-                <span className="font-medium text-xl">
+                <span className="font-medium text-xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-white">
                   Sarana komunikasi dan kolaborasi alumni, mahasiswa, dan
                   civitas akademika dalam mewujudkan kontribusi nyata di bidang
                   teknologi dan pendidikan.
@@ -114,13 +112,13 @@ export default function Home() {
 
                 {/* Tombol utama aksi: lihat daftar alumni & tentang alumni */}
                 <div className="flex flex-row gap-6">
-                  <button className="bg-white rounded-md px-6 py-4 text-black font-medium text-xl flex items-center gap-2">
+                  <button className="bg-white rounded-md px-6 py-4 text-black font-medium text-xl flex items-center gap-2 transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-black">
                     {/* Ikon kustom — prop className/width diteruskan ke ikon */}
                     <LihatDaftarAlumniIcon className="text-black" width={32} />
                     <span>Lihat Daftar Alumni</span>
                   </button>
 
-                  <button className="border border-white rounded-md px-6 py-4 text-white font-medium text-xl flex items-center gap-2">
+                  <button className="border border-white rounded-md px-6 py-4 text-white font-medium text-xl flex items-center gap-2 transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-white">
                     <TentangAlumniIcon className="text-white" width={32} />
                     <span>Tentang Alumni</span>
                   </button>
@@ -129,9 +127,9 @@ export default function Home() {
 
               {/* Kolom kanan — statistik ringkas */}
               <div className="flex flex-1 items-center justify-center">
-                <div className="bg-[#354E96] flex rounded-2xl p-16 gap-16">
+                <div className="bg-[#354E96] flex rounded-2xl p-16 gap-16 transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-white">
                   {/* Setiap blok menampilkan angka dan label */}
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center ">
                     <span className="text-white font-bold text-3xl">1K+</span>
                     <span className="text-white font-normal text-base">
                       Alumni Terhubung
