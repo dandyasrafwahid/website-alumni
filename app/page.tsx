@@ -64,21 +64,50 @@ export default function Home() {
 
           {/* Menu navigasi tengah */}
           <div className="navbar-center">
-            <ul className="menu menu-horizontal text-black font-medium text-xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-black">
-              <li>
-                <span className="font-extrabold text-[#1E3A8A]" >Home </span>
+            <ul className="menu menu-horizontal text-black font-medium text-xl flex items-center gap-4">
+              <li className="relative group px-2">
+                <span className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+                  Home
+                </span>
+                <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                  Menu Home
+                </div>
               </li>
-              <li>
-                <span>Alumni</span>
+
+              <li className="relative group px-2">
+                <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+                  Alumni
+                </span>
+                <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                  Daftar Alumni & Profil
+                </div>
               </li>
-              <li>
-                <span>About</span>
+
+              <li className="relative group px-2">
+                <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+                  About
+                </span>
+                <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                  Tentang kami
+                </div>
               </li>
-              <li>
-                <span>Contact</span>
+
+              <li className="relative group px-2">
+                <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+                  Contact
+                </span>
+                <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                  Hubungi kami
+                </div>
               </li>
-              <li>
-                <span>Survey</span>
+
+              <li className="relative group px-2">
+                <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+                  Survey
+                </span>
+                <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                  Ikuti Survey
+                </div>
               </li>
             </ul>
           </div>
