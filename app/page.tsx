@@ -1,7 +1,7 @@
 // Import ikon kustom dari folder components/icons
 import LihatDaftarAlumniIcon from "@/components/icons/LihatDaftarAlumniIcon";
 import TentangAlumniIcon from "@/components/icons/TentangAlumniIcon";
-import LogoutButton from "@/components/icons/LogoutButton";
+import LogoutButton from "@/components/button/LogoutButton";
 
 // Next.js Image component untuk optimisasi gambar
 import Image from "next/image";
