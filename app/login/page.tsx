@@ -3,15 +3,40 @@
 // Next.js Image component untuk optimisasi gambar
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [nim, setNim] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nim, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log("Login attempt:", { nim, password, rememberMe });
+        localStorage.setItem("userToken", data.token);
+        router.push("/dashboard");
+      } else {
+        setError(data.message || "Login Gagal");
+      }
+    } catch (err) {
+      setError(error);
+    }
   };
 
   return (
@@ -42,12 +67,12 @@ export default function Login() {
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email Input */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2">Email</label>
+              <label className="block text-gray-300 text-sm mb-2">NIM</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter email"
+                type="text"
+                value={nim}
+                onChange={(e) => setNim(e.target.value)}
+                placeholder="Enter NIM"
                 className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 required
               />
@@ -79,7 +104,8 @@ export default function Login() {
               />
               <label
                 htmlFor="remember"
-                className="ml-2 text-gray-400 text-sm cursor-pointer">
+                className="ml-2 text-gray-400 text-sm cursor-pointer"
+              >
                 Ingat saya
               </label>
             </div>
@@ -87,7 +113,8 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300">
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 cursor-pointer"
+            >
               Masuk
             </button>
           </form>
@@ -98,7 +125,8 @@ export default function Login() {
               Lupa kata sandi Anda?{" "}
               <a
                 href="#"
-                className="text-blue-400 hover:text-blue-300 font-semibold">
+                className="text-blue-400 hover:text-blue-300 font-semibold"
+              >
                 Reset Password
               </a>
             </p>
@@ -106,7 +134,8 @@ export default function Login() {
               Tidak punya akun?{" "}
               <a
                 href="#"
-                className="text-blue-400 hover:text-blue-300 font-semibold">
+                className="text-blue-400 hover:text-blue-300 font-semibold"
+              >
                 Daftar
               </a>
             </p>
