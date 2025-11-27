@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Navbar() {
   return (
     <>
@@ -40,22 +42,27 @@ export default function Navbar() {
             </button>
             <div className="shrink-0 flex mr-auto items-center">
               <a href="https://alumni.unhas.ac.id">
-                <img
-                  src="https://alumni.unhas.ac.id/assets/image/logo_unhas_no_text.png"
-                  alt="logo unhas"
-                  height="55"
-                  width="55"
-                  className="block h-12 w-auto fill-current text-gray-800"
-                />
+                <div className="flex flex-row items-center gap-x-4">
+                  {/* Logo universitas — menggunakan Next.js Image untuk optimisasi */}
+                  <Image
+                    src="/unhas-logo.png"
+                    alt="Unhas Logo"
+                    width={40}
+                    height={10}
+                    priority
+                  />
+
+                  {/* Teks identitas institusi */}
+                  <div className="flex flex-col text-black">
+                    <span className="font-normal text-sm">
+                      Universitas Hasanuddin
+                    </span>
+                    <span className="font-bold text-sm">
+                      Department of Informatics
+                    </span>
+                  </div>
+                </div>
               </a>
-              <div className="pt-1 whitespace-nowrap ml-3 font-semibold text-base leading-none">
-                <div className="text-black font-thin">
-                  Direktorat Hubungan Alumni
-                </div>
-                <div className="text-black mb-2 font-thin">
-                  Universitas Hasanuddin
-                </div>
-              </div>
             </div>
             <form
               action="#"
