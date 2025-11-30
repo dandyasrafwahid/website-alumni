@@ -14,9 +14,9 @@ export default function Home() {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* Konten utama halaman */}
-      <div className="drawer-content flex flex-col pt-16">
+      <div className="drawer-content flex flex-col bg-white pt-3 min-h-screen">
         {/* Navbar atas — tetap (fixed) di bagian atas */}
-        <div className="navbar bg-white w-full px-8 fixed top-0 left-0 z-50">
+        <div className="navbar bg-white w-full px-6 py-3 sticky top-0 left-0 z-50">
           {/* Tombol hamburger hanya tampil di layar kecil */}
           <div className="flex-none lg:hidden">
             <label
@@ -114,11 +114,25 @@ export default function Home() {
 
           {/* Bagian kanan navbar: tombol Sign in / Register */}
           <div className="navbar-end gap-5">
-            <a href="/login">
-              <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-5 py-1 text-base text-[#1E1E1E]">
-                login
-              </button>
-            </a>
+            <div className="relative group">
+              <a href="/login" aria-label="Login">
+                <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-3 py-1 text-base text-[#1E1E1E] flex items-center gap-3 transition-transform duration-200 group-hover:scale-105 hover:shadow-md">
+                  <Image
+                    src="/logo login.png"
+                    alt="Login logo"
+                    width={28}
+                    height={28}
+                    className="rounded-full"
+                    priority
+                  />
+                  <span className="font-medium">Login</span>
+                </button>
+              </a>
+
+              <div className="pointer-events-none absolute top-full right-0 mt-2 w-max rounded-md bg-white text-black text-sm px-3 py-1 shadow-lg opacity-0 scale-95 transform transition-all duration-200 group-hover:opacity-100 group-hover:scale-100">
+                Masuk ke akun
+              </div>
+            </div>
           </div>
         </div>
 
@@ -184,48 +198,74 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bagian hero tambahan dengan gambar dan teks */}
-        <div className="hero bg-base-200 min-h-screen">
-          <div className="hero-content flex-col lg:flex-row">
-            <Image
-              src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-              alt="Hero image"
-              width={380}
-              height={260}
-              className="max-w-sm rounded-lg shadow-2xl"
-              unoptimized
-            />
-            <div>
-              <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                assumenda excepturi exercitationem quasi. In deleniti eaque aut
-                repudiandae et a id nisi.
-              </p>
-              <button className="btn btn-primary">Get Started</button>
-            </div>
-          </div>
-        </div>
+        {/* Bagian hero tambahan dengan gambar dan teks - besar, bergaya kartu */}
+        <div className="w-full bg-white">
+          <div className="max-w-7xl mx-auto px-6 py-12 space-y-10">
+            {/* Kartu 1 - Dana Abadi (teks kiri, gambar kanan) */}
+            <section className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch">
+              <div className="lg:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+                <h2 className="text-2xl lg:text-3xl font-bold text-gray-800">
+                  Dana Abadi Untuk Unhas Maju
+                </h2>
+                <p className="mt-6 text-gray-600 leading-relaxed max-w-2xl">
+                  Dana Abadi yang terkumpul ditampung pada rekening bank Rektor
+                  Universitas Hasanuddin. Selanjutnya, dana tersebut dikelola
+                  dan dikembangkan secara terus-menerus dalam berbagai instrumen
+                  investasi.
+                </p>
 
-        <div className="hero bg-base-200 min-h-screen">
-          <div className="hero-content flex-col lg:flex-row-reverse">
-            <Image
-              src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-              alt="Hero image"
-              width={380}
-              height={260}
-              className="max-w-sm rounded-lg shadow-2xl"
-              unoptimized
-            />
-            <div>
-              <h1 className="text-5xl font-bold">Box Office News!</h1>
-              <p className="py-6">
-                Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                assumenda excepturi exercitationem quasi. In deleniti eaque aut
-                repudiandae et a id nisi.
-              </p>
-              <button className="btn btn-primary">Get Started</button>
-            </div>
+                <div className="mt-8 w-full lg:w-1/2">
+                  <button className="w-full bg-[#0b3b57] hover:bg-[#0d4f6f] text-white py-4 rounded-lg font-semibold tracking-wide shadow-md">
+                    DONASI &nbsp; ➜
+                  </button>
+                </div>
+              </div>
+
+              <div className="lg:w-1/3 relative shrink-0">
+                <div className="h-56 md:h-auto lg:h-full w-full overflow-hidden">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Kampus Unhas"
+                    width={1200}
+                    height={800}
+                    className="object-cover h-full w-full"
+                    unoptimized
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Kartu 2 - Survei (gambar kiri, teks kanan) */}
+            <section className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch">
+              <div className="lg:w-1/3 relative shrink-0">
+                <div className="h-56 md:h-auto lg:h-full w-full overflow-hidden">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Wisuda / Survei"
+                    width={1200}
+                    height={800}
+                    className="object-cover h-full w-full"
+                    unoptimized
+                  />
+                </div>
+              </div>
+
+              <div className="lg:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-800">
+                  Survei Penjaringan Alumni
+                </h3>
+                <p className="mt-6 text-gray-600 leading-relaxed max-w-2xl">
+                  Survei ini ditujukan untuk para alumni unhas yang lulus pada
+                  tahun 2010 dan tahun-tahun sebelumnya.
+                </p>
+
+                <div className="mt-8 w-full lg:w-1/2">
+                  <button className="w-full bg-[#0b3b57] hover:bg-[#0d4f6f] text-white py-4 rounded-lg font-semibold tracking-wide shadow-md">
+                    ISI SURVEI &nbsp; ➜
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
 
@@ -233,7 +273,7 @@ export default function Home() {
         <div className="bg-white flex justify-center">
           <div className="flex flex-row gap-8 px-8 py-12 items-start">
             {/* Card 1 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm">
+            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
               <figure>
                 <Image
                   src="/DSC09820.JPG"
@@ -257,7 +297,7 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm">
+            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
               <figure>
                 <Image
                   src="/DSC09820.JPG"
@@ -280,7 +320,7 @@ export default function Home() {
               </div>
             </div>
             {/* Card 3 */}
-            <div className="bg-[#354E96] w-80 shadow-sm">
+            <div className="bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
               <figure>
                 <Image
                   src="/DSC09820.JPG"
@@ -304,7 +344,7 @@ export default function Home() {
             </div>
 
             {/* Card 4 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm">
+            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
               <figure>
                 <Image
                   src="/DSC09820.JPG"
