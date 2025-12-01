@@ -83,7 +83,7 @@ export default function Sidebar() {
             </li>
             <li>
               <a
-                href="#"
+                href="/dashboard/profil"
                 className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -139,7 +139,7 @@ export default function Sidebar() {
             </li>
             <li>
               <a
-                href="#"
+                href="/dashboard/pendidikan"
                 className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -169,7 +169,7 @@ export default function Sidebar() {
             </li>
             <li>
               <a
-                href="#"
+                href="/dashboard/pekerjaan"
                 className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -206,7 +206,7 @@ export default function Sidebar() {
             <ul className="space-y-2 border-t border-gray-300">
               <li className="mt-2">
                 <a
-                  href="#"
+                  href="/dashboard/loker"
                   className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                   <svg
@@ -236,7 +236,7 @@ export default function Sidebar() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/dashboard/news"
                   className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                   <svg
