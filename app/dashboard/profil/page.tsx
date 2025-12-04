@@ -3,85 +3,115 @@ export default function Profil() {
     <main className="pr-4 pl-4 md:ml-64 h-auto pt-20">
       <div className="rounded-lg border-gray-300 dark:border-gray-600 mb-4">
         <div className="border p-4 rounded-lg border-gray-300 dark:border-gray-600">
-          <h2 className="text-3xl text-slate-900 font-bold">Profil Alumni</h2>
-          <form className="mt-8 space-y-5">
+          <div className="flex justify-between items-center mb-8">
             <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Name
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Name"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
+              <h1 className="text-2xl font-bold text-gray-800">
+                Profil Alumni
+              </h1>
+              <p className="text-gray-600">Informasi dasar akun</p>
             </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                NIM
-              </label>
-              <input
-                type="text"
-                placeholder="Enter NIM"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Enter Email"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Jenis Kelamin
-              </label>
-              <input
-                type="text"
-                placeholder="L/P"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                No. Whatsapp
-              </label>
-              <input
-                type="text"
-                placeholder="+62"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Tempat Tinggal
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Address"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            {/* <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Message
-              </label>
-              <textarea
-                placeholder="Enter Message"
-                rows="6"
-                className="rounded w-full px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm pt-3 outline-0 transition-all"
-              ></textarea>
-            </div> */}
             <button
-              type="button"
-              className="rounded text-white bg-slate-900 font-medium hover:bg-slate-800 tracking-wide text-sm px-4 py-2.5 w-full border-0 outline-0 cursor-pointer"
+              id="editProfileBtn"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg transition duration-200 flex items-center"
             >
-              Submit
+              <i className="fas fa-edit mr-2"></i>
+              Edit Profil
             </button>
-          </form>
+          </div>
+          <div className="bg-white rounded-xl overflow-hidden mb-8">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 w-1/3">
+                      <div className="flex items-center">
+                        <i className="fas fa-user text-blue-500 mr-3"></i>
+                        Nama Lengkap
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                      Andi Wijaya
+                    </td>
+                  </tr>
+
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex items-center">
+                        <i className="fas fa-id-card text-green-500 mr-3"></i>
+                        NIM
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                      3175081508950001
+                    </td>
+                  </tr>
+
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex items-center">
+                        <i className="fas fa-envelope text-red-500 mr-3"></i>
+                        Email
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                      andi.wijaya@example.com
+                    </td>
+                  </tr>
+
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex items-center">
+                        <i className="fas fa-venus-mars text-purple-500 mr-3"></i>
+                        Jenis Kelamin
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                      Laki-laki
+                    </td>
+                  </tr>
+
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <div className="flex items-center">
+                        <i className="fas fa-phone text-yellow-500 mr-3"></i>
+                        Nomor Ponsel
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
+                      +62 812-3456-7890
+                    </td>
+                  </tr>
+
+                  <tr className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 align-top">
+                      <div className="flex items-start">
+                        <i className="fas fa-home text-indigo-500 mr-3 mt-1"></i>
+                        Tempat Tinggal
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-800">
+                      <div className="font-medium">
+                        Jl. Merdeka No. 123, Jakarta Pusat
+                      </div>
+                      <div className="text-gray-600 mt-1 text-sm">
+                        RT 05/RW 02, Kelurahan Menteng, Kecamatan Menteng
+                        Jakarta Pusat 10310, DKI Jakarta
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <a
+              href="/dashboard/profil/edit"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition duration-200 flex items-center shadow"
+            >
+              <i className="fas fa-user-edit mr-2"></i>
+              Edit Profil
+            </a>
+          </div>
         </div>
       </div>
     </main>

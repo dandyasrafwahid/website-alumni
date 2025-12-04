@@ -236,9 +236,151 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-start mt-10">
+                {/* <div className="flex items-start mt-10"> */}
+                <a
+                  href="/dashboard/profil"
+                  className="mt-10 flex text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300 bg-black hover:bg-gray-500 cursor-pointer"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <path
+                        d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                        stroke="#FFFFFF"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>{" "}
+                      <path
+                        d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                        stroke="#FFFFFF"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></path>{" "}
+                    </g>
+                  </svg>{" "}
+                  <span className="ml-3">Edit Profil</span>
+                </a>
+                {/* </div> */}
+              </div>
+
+              <div className="bg-white rounded-2xl p-6 shadow-md card-hover">
+                <h2 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b">
+                  <i className="fas fa-briefcase mr-2 text-green-500"></i>{" "}
+                  Informasi Pekerjaan
+                </h2>
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <div className="w-10 text-center">
+                      <svg
+                        fill="#000000"
+                        viewBox="-2 0 16 16"
+                        id="company-16px"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            id="Path_133"
+                            data-name="Path 133"
+                            d="M323.5-192h-9a1.5,1.5,0,0,0-1.5,1.5V-176h12v-14.5A1.5,1.5,0,0,0,323.5-192ZM318-177v-3h2v3Zm6,0h-3v-3.5a.5.5,0,0,0-.5-.5h-3a.5.5,0,0,0-.5.5v3.5h-3v-13.5a.5.5,0,0,1,.5-.5h9a.5.5,0,0,1,.5.5Zm-8-12h2v2h-2Zm4,0h2v2h-2Zm-4,4h2v2h-2Zm4,0h2v2h-2Z"
+                            transform="translate(-313 192)"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Perusahaan</p>
+                      <p className="font-medium">TechCorp Indonesia</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start">
+                    <div className="w-10 text-center">
+                      <svg
+                        fill="#000000"
+                        viewBox="0 0 32 32"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <title>profile1</title>{" "}
+                          <path d="M23 11.031c0-0.553-0.448-1-1-1h-3c0 0 0.033-1.204 0.033-2.954 0-1.625-1.346-3.108-3.033-3.108s-2.988 1.411-2.988 3.099c0 1.625-0.012 2.964-0.012 2.964h-3c-0.553 0-1 0.447-1 1 0 0.552 0 1.938 0 1.938h14c0-0.001 0-1.387 0-1.939zM16 8.969c-0.553 0-1-0.448-1-1 0-0.553 0.447-1 1-1 0.552 0 1 0.447 1 1s-0.448 1-1 1zM28 11.031l-4-0.062 0.021 3.104h-16.021v-2.979l-4-0.062c-1.104 0-2 0.896-2 2v14c0 1.104 0.896 2 2 2h24c1.104 0 2-0.896 2-2v-14c0-1.105-0.896-2.001-2-2.001zM10 16.844c1.208 0 2.188 1.287 2.188 2.875s-0.98 2.875-2.188 2.875-2.188-1.287-2.188-2.875 0.98-2.875 2.188-2.875zM5.667 25.979c0 0 0.237-1.902 0.776-2.261s2.090-0.598 2.090-0.598 1.006 1.075 1.434 1.075c0.427 0 1.433-1.075 1.433-1.075s1.552 0.238 2.091 0.598c0.633 0.422 0.791 2.261 0.791 2.261h-8.615zM26 25.031h-9v-1h9v1zM26 23.031h-9v-1h9v1zM26 21.031h-9v-1h9v1zM26 19.031h-9v-1h9v1z"></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Jabatan</p>
+                      <p className="font-medium">Senior Software Engineer</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start">
+                    <div className="w-10 text-center">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12Z"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Lokasi Kantor</p>
+                      <p className="font-medium">
+                        Sudirman Central Business District, Jakarta
+                      </p>
+                    </div>
+                  </div>
                   <a
-                    href="/dashboard/profil"
+                    href="/dashboard/pekerjaan"
                     className="flex text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300 bg-black hover:bg-gray-500 cursor-pointer"
                   >
                     <svg
@@ -271,48 +413,8 @@ export default function Dashboard() {
                         ></path>{" "}
                       </g>
                     </svg>{" "}
-                    <span className="ml-3">Edit Profil</span>
+                    <span className="ml-3">Lihat Selengkapnya</span>
                   </a>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-md card-hover">
-                <h2 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b">
-                  <i className="fas fa-briefcase mr-2 text-green-500"></i>{" "}
-                  Informasi Pekerjaan
-                </h2>
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="w-10 text-center">
-                      <i className="fas fa-building text-gray-500"></i>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Perusahaan</p>
-                      <p className="font-medium">TechCorp Indonesia</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="w-10 text-center">
-                      <i className="fas fa-user-tie text-gray-500"></i>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Jabatan</p>
-                      <p className="font-medium">Senior Software Engineer</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start">
-                    <div className="w-10 text-center">
-                      <i className="fas fa-map-marker-alt text-gray-500"></i>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Lokasi Kantor</p>
-                      <p className="font-medium">
-                        Sudirman Central Business District, Jakarta
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -320,39 +422,194 @@ export default function Dashboard() {
             <div className="space-y-6">
               <div className="bg-white rounded-2xl p-6 shadow-md card-hover">
                 <h2 className="text-xl font-bold text-gray-800 mb-4 pb-2 border-b">
-                  <i className="fas fa-first-aid mr-2 text-red-500"></i> Kontak
-                  Darurat
+                  <i className="fas fa-first-aid mr-2 text-red-500"></i>{" "}
+                  Informasi Pendidikan
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-start">
                     <div className="w-10 text-center">
-                      <i className="fas fa-user-friends text-gray-500"></i>
+                      <svg
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            fill="var(--ci-primary-color, #000000)"
+                            d="M247.759,14.358,16,125.946V184H496V125.638ZM464,152H48v-5.946L248.241,49.642,464,146.362Z"
+                            className="ci-primary"
+                          ></path>{" "}
+                          <path
+                            fill="var(--ci-primary-color, #000000)"
+                            d="M16,496H496V392H16Zm32-72H464v40H48Z"
+                            className="ci-primary"
+                          ></path>{" "}
+                          <rect
+                            width="32"
+                            height="160"
+                            x="72"
+                            y="208"
+                            fill="var(--ci-primary-color, #000000)"
+                            className="ci-primary"
+                          ></rect>{" "}
+                          <rect
+                            width="32"
+                            height="160"
+                            x="408"
+                            y="208"
+                            fill="var(--ci-primary-color, #000000)"
+                            className="ci-primary"
+                          ></rect>{" "}
+                          <rect
+                            width="32"
+                            height="160"
+                            x="184"
+                            y="208"
+                            fill="var(--ci-primary-color, #000000)"
+                            className="ci-primary"
+                          ></rect>{" "}
+                          <rect
+                            width="32"
+                            height="160"
+                            x="296"
+                            y="208"
+                            fill="var(--ci-primary-color, #000000)"
+                            className="ci-primary"
+                          ></rect>{" "}
+                        </g>
+                      </svg>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Nama Kontak</p>
-                      <p className="font-medium">Sari Dewi (Ibu)</p>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Universitas</p>
+                      <p className="font-medium">Universitas Hasanuddin</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <div className="w-10 text-center">
-                      <i className="fas fa-phone-alt text-gray-500"></i>
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M4 4.5C4 3.11929 5.11929 2 6.5 2H20V22H6.5C5.11929 22 4 20.8807 4 19.5V4.5Z"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M4 19.5V19.5C4 18.1193 5.11928 17 6.49998 17H20"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Telepon Darurat</p>
-                      <p className="font-medium">+62 813-9876-5432</p>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Fakultas</p>
+                      <p className="font-medium">Teknik</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <div className="w-10 text-center">
-                      <i className="fas fa-address-card text-gray-500"></i>
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M12 4.5L2 9.5L12 14.5L22 9.5L12 4.5Z"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M19 11V16L12 19.5L5 16V11"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                          <path
+                            d="M22 14V18"
+                            stroke="#000000"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Hubungan</p>
-                      <p className="font-medium">Keluarga</p>
+                    <div className="ml-4">
+                      <p className="text-sm text-gray-500">Program Studi</p>
+                      <p className="font-medium">Teknik Informatika</p>
                     </div>
                   </div>
+                  <a
+                    href="/dashboard/pendidikan"
+                    className="flex text-white font-bold py-3 px-6 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-300 bg-black hover:bg-gray-500 cursor-pointer"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                    >
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                      <g
+                        id="SVGRepo_tracerCarrier"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      ></g>
+                      <g id="SVGRepo_iconCarrier">
+                        {" "}
+                        <path
+                          d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                          stroke="#FFFFFF"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>{" "}
+                        <path
+                          d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                          stroke="#FFFFFF"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></path>{" "}
+                      </g>
+                    </svg>{" "}
+                    <span className="ml-3">Lihat Selengkapnya</span>
+                  </a>
                 </div>
               </div>
 
