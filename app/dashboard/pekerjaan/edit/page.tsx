@@ -4,16 +4,46 @@ export default function Profil() {
       <div className="rounded-lg border-gray-300 dark:border-gray-600 mb-4">
         <div className="border p-4 rounded-lg border-gray-300 dark:border-gray-600">
           <h2 className="text-3xl text-slate-900 font-bold">
-            Riwayat Pendidikan
+            Riwayat Pekerjaan
           </h2>
           <form className="mt-8 space-y-5">
             <div>
               <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Jenjang
+                Nama Perusahaan
               </label>
               <input
                 type="text"
-                placeholder="Masukkan Jenjang"
+                placeholder="Masukkan Nama Perusahaan"
+                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-slate-900 font-medium mb-2 block">
+                Jabatan
+              </label>
+              <input
+                type="text"
+                placeholder="Masukkan Jabatan"
+                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-slate-900 font-medium mb-2 block">
+                Alamat Perusahaan
+              </label>
+              <input
+                type="text"
+                placeholder="Masukkan Alamat Perusahaan"
+                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-slate-900 font-medium mb-2 block">
+                Industri
+              </label>
+              <input
+                type="text"
+                placeholder="Masukkan Industri Perusahaan"
                 className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
               />
             </div>
@@ -23,47 +53,17 @@ export default function Profil() {
               </label>
               <input
                 type="text"
-                placeholder="Tahun Masuk"
+                placeholder="Masukkan Tahun Masuk"
                 className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
               />
             </div>
             <div>
               <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Tahun Lulus
+                Tahun Keluar
               </label>
               <input
                 type="text"
-                placeholder="Tahun Lulus"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Universitas
-              </label>
-              <input
-                type="text"
-                placeholder="Masukkan Universitas"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Fakultas
-              </label>
-              <input
-                type="text"
-                placeholder="Masukkan Fakultas"
-                className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
-              />
-            </div>
-            <div>
-              <label className="text-sm text-slate-900 font-medium mb-2 block">
-                Program Studi
-              </label>
-              <input
-                type="text"
-                placeholder="Masukkan Program Studi"
+                placeholder="Masukkan Tahun Keluar"
                 className="rounded w-full py-2.5 px-4 text-slate-800 bg-gray-100 border border-gray-200 focus:border-slate-900 focus:bg-transparent text-sm outline-0 transition-all"
               />
             </div>
@@ -79,7 +79,7 @@ export default function Profil() {
             </div> */}
             <div className="flex gap-2">
               <a
-                href="/dashboard/pendidikan"
+                href="/dashboard/pekerjaan"
                 className="text-center rounded text-white bg-red-500 font-medium hover:bg-red-800 tracking-wide text-sm px-4 py-2.5 w-full border-0 outline-0 cursor-pointer"
               >
                 Back

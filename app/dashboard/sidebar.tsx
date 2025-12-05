@@ -207,7 +207,7 @@ export default function Sidebar() {
               <li className="mt-2">
                 <a
                   href="/dashboard/loker"
-                  className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group "
                 >
                   <svg
                     viewBox="0 0 16 16"
