@@ -1,4 +1,36 @@
-export default function Profil() {
+// "use client";
+
+// import { useEffect, useState } from "react";
+import { cookies } from "next/headers";
+
+async function getDataAlumni() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("authToken")?.value;
+
+  if (!authToken) {
+    return null;
+  }
+
+  const res = await fetch("http://localhost:3001/api/getDataAlumni/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${authToken}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+export default async function Profil() {
+  const profile = await getDataAlumni();
+
   return (
     <main className="pr-4 pl-4 md:ml-64 h-auto pt-20">
       <div className="rounded-lg border-gray-300 dark:border-gray-600 mb-4">
@@ -30,7 +62,7 @@ export default function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      Andi Wijaya
+                      {profile.data.name}
                     </td>
                   </tr>
 
@@ -42,7 +74,7 @@ export default function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      3175081508950001
+                      {profile.data.nim}
                     </td>
                   </tr>
 
@@ -54,7 +86,7 @@ export default function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      andi.wijaya@example.com
+                      {profile.data.email}
                     </td>
                   </tr>
 
@@ -66,7 +98,7 @@ export default function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      Laki-laki
+                      {profile.data.gender}
                     </td>
                   </tr>
 
@@ -78,7 +110,7 @@ export default function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      +62 812-3456-7890
+                      {profile.data.no_wa}
                     </td>
                   </tr>
 
@@ -91,11 +123,7 @@ export default function Profil() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-800">
                       <div className="font-medium">
-                        Jl. Merdeka No. 123, Jakarta Pusat
-                      </div>
-                      <div className="text-gray-600 mt-1 text-sm">
-                        RT 05/RW 02, Kelurahan Menteng, Kecamatan Menteng
-                        Jakarta Pusat 10310, DKI Jakarta
+                        {profile.data.tmpt_tinggal}
                       </div>
                     </td>
                   </tr>

@@ -1,4 +1,88 @@
-export default function Dashboard() {
+// "use client";
+
+// import { useEffect, useState } from "react";
+import { cookies } from "next/headers";
+
+async function getDataAlumni() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("authToken")?.value;
+
+  if (!authToken) {
+    return null;
+  }
+
+  const res = await fetch("http://localhost:3001/api/getDataAlumni/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${authToken}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+async function getDataPendidikan() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("authToken")?.value;
+
+  if (!authToken) {
+    return null;
+  }
+
+  const res = await fetch("http://localhost:3001/api/getDataPendidikan/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${authToken}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+async function getDataPekerjaan() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("authToken")?.value;
+
+  if (!authToken) {
+    return null;
+  }
+
+  const res = await fetch("http://localhost:3001/api/getDataPekerjaan/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${authToken}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+export default async function Dashboard() {
+  const alumni = await getDataAlumni();
+  const pendidikan = await getDataPendidikan();
+  const pekerjaan = await getDataPekerjaan();
+
   return (
     <main className="p-4 md:ml-64 h-auto pt-20">
       <div className="rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
@@ -20,7 +104,9 @@ export default function Dashboard() {
                 </div>
 
                 <div className="md:text-left">
-                  <h1 className="text-3xl font-bold mb-2">Andi Wijaya</h1>
+                  <h1 className="text-3xl font-bold mb-2">
+                    {alumni.data.name}
+                  </h1>
                   <p className="text-lg opacity-90 mb-1">Software Engineer</p>
                   <p className="flex opacity-80 mb-4">
                     <svg
@@ -171,7 +257,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Jenis Kelamin</p>
-                      <p className="font-medium">Laki-laki</p>
+                      <p className="font-medium">{alumni.data.gender}</p>
                     </div>
                   </div>
 
@@ -202,7 +288,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Email</p>
-                      <p className="font-medium">andi.wijaya@example.com</p>
+                      <p className="font-medium">{alumni.data.email}</p>
                     </div>
                   </div>
 
@@ -232,7 +318,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Telepon</p>
-                      <p className="font-medium">+62 812-3456-7890</p>
+                      <p className="font-medium">{alumni.data.no_wa}</p>
                     </div>
                   </div>
                 </div>
@@ -309,7 +395,9 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Perusahaan</p>
-                      <p className="font-medium">TechCorp Indonesia</p>
+                      <p className="font-medium">
+                        {pekerjaan.data[0].nama_perusahaan}
+                      </p>
                     </div>
                   </div>
 
@@ -336,7 +424,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Jabatan</p>
-                      <p className="font-medium">Senior Software Engineer</p>
+                      <p className="font-medium">{pekerjaan.data[0].jabatan}</p>
                     </div>
                   </div>
 
@@ -374,9 +462,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Lokasi Kantor</p>
-                      <p className="font-medium">
-                        Sudirman Central Business District, Jakarta
-                      </p>
+                      <p className="font-medium">{pekerjaan.data[0].alamat}</p>
                     </div>
                   </div>
                   <a
@@ -488,7 +574,9 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Universitas</p>
-                      <p className="font-medium">Universitas Hasanuddin</p>
+                      <p className="font-medium">
+                        {pendidikan.data[0].universitas}
+                      </p>
                     </div>
                   </div>
 
@@ -526,7 +614,9 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Fakultas</p>
-                      <p className="font-medium">Teknik</p>
+                      <p className="font-medium">
+                        {pendidikan.data[0].fakultas}
+                      </p>
                     </div>
                   </div>
 
@@ -571,7 +661,7 @@ export default function Dashboard() {
                     </div>
                     <div className="ml-4">
                       <p className="text-sm text-gray-500">Program Studi</p>
-                      <p className="font-medium">Teknik Informatika</p>
+                      <p className="font-medium">{pendidikan.data[0].prodi}</p>
                     </div>
                   </div>
                   <a

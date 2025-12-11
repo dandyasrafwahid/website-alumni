@@ -1,4 +1,34 @@
-export default function Profil() {
+import { cookies } from "next/headers";
+
+async function getDataPendidikan() {
+  const cookieStore = await cookies();
+  const authToken = cookieStore.get("authToken")?.value;
+
+  if (!authToken) {
+    return null;
+  }
+
+  const res = await fetch("http://localhost:3001/api/getDataPendidikan/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `${authToken}`,
+    },
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+export default async function Profil() {
+  const data = await getDataPendidikan();
+  // const pendidikan = data.length > 0 ? Object.keys(data[0]) : [];
+
   return (
     <main className="pr-4 pl-4 md:ml-64 h-auto pt-20">
       <div className="rounded-lg border-gray-300 dark:border-gray-600 mb-4">
@@ -77,7 +107,13 @@ export default function Profil() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
+                  {/* {data.map((item, rowIndex) => ( */}
                   <tr className="table-row bg-white">
+                    {/* {pendidikan.map((header, colIndex) => ( */}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {/* {item[header] || "-"} */}
+                    </td>
+                    {/* ))} */}
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       1
                     </td>
@@ -112,99 +148,31 @@ export default function Profil() {
                       </div>
                     </td>
                   </tr>
-
-                  <tr className="table-row bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      2
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        S2
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      2019
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      2021
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Institut Teknologi Bandung
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Sekolah Teknik Elektro dan Informatika
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Teknik Informatika
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button className="edit-btn action-btn text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg">
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button className="delete-btn action-btn text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg">
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
+                  {/* ))} */}
                   <tr className="table-row bg-white">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      3
+                      1
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        D3
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        S1
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      2010
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       2013
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Politeknik Negeri Jakarta
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Jurusan Teknik Elektro
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">
-                      Teknik Komputer
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button className="edit-btn action-btn text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg">
-                          <i className="fas fa-edit"></i>
-                        </button>
-                        <button className="delete-btn action-btn text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 p-2 rounded-lg">
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr className="table-row bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      4
-                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                        SMA
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      2007
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                      2010
+                      2017
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-800">
-                      SMA Negeri 8 Jakarta
+                      Universitas Indonesia
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-800">-</td>
-                    <td className="px-6 py-4 text-sm text-gray-800">IPA</td>
+                    <td className="px-6 py-4 text-sm text-gray-800">
+                      Fakultas Ilmu Komputer
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-800">
+                      Ilmu Komputer
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
                         <button className="edit-btn action-btn text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded-lg">

@@ -9,14 +9,9 @@ const LogoutButton = () => {
     try {
       const res = await fetch("http://localhost:3001/api/auth/logout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        },
       });
 
       if (res.ok) {
-        localStorage.removeItem("userToken");
         router.push("/login");
       } else {
         console.error("Logout Error: ", await res.text());

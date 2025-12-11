@@ -23,13 +23,14 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ nim, password }),
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        console.log("Login attempt:", { nim, password, rememberMe });
-        localStorage.setItem("userToken", data.token);
+        // console.log("Login attempt:", { nim, password, rememberMe });
+        // localStorage.setItem("userToken", data.token);
         router.push("/dashboard");
       } else {
         setError(data.message || "Login Gagal");
