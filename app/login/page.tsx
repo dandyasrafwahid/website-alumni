@@ -142,9 +142,7 @@ export default function Login() {
         {/* Center Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <div className="text-center">
-            <h2 className="text-5xl font-bold mb-4">
-              Bergabunglah Bersama Kami
-            </h2>
+            <h2 className="text-5xl font-bold mb-4">SELAMAT DATANG KANDA</h2>
             <p className="text-xl opacity-90">
               Alumni Teknik Informatika Universitas Hasanuddin
             </p>
