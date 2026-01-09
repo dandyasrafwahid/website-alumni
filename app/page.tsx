@@ -17,7 +17,7 @@ export default function Home() {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* Konten utama halaman */}
-      <div className="drawer-content flex flex-col bg-white pt-3 min-h-screen">
+      <div id="main-content" className="drawer-content flex flex-col bg-white pt-3 min-h-screen">
         {/* Navbar atas — menggunakan komponen Navbar */}
         <Navbar />
 
@@ -307,7 +307,7 @@ export default function Home() {
                         E-mail :
                       </span>
                       <span className="text-blue-600 hover:text-blue-700 cursor-pointer">
-                        dirhapd@unhas.ac.id
+                        informatika@unhas.ac.id
                       </span>
                     </p>
                   </div>
@@ -318,7 +318,7 @@ export default function Home() {
               <div className="flex-1">
                 <div className="rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src="/DSC09820.JPG"
+                    src="/kampus03.png"
                     alt="Universitas Hasanuddin"
                     width={600}
                     height={400}
@@ -334,10 +334,11 @@ export default function Home() {
         <footer className="footer sm:footer-horizontal bg-[#1E3A8A] text-white p-10">
           <nav>
             <h6 className="footer-title">Services</h6>
-            <a className="link link-hover">Branding</a>
-            <a className="link link-hover">Design</a>
-            <a className="link link-hover">Marketing</a>
-            <a className="link link-hover">Advertisement</a>
+            <a className="link link-hover">https://unhas.ac.id</a>
+            <a className="link link-hover">https://sso.unhas.ac.id</a>
+            <a className="link link-hover">https://neosia.unhas.ac.id</a>
+            <a className="link link-hover">https://digilib.unhas.ac.id</a>
+            <a className="link link-hover">https://repository.unhas.ac.id</a>
           </nav>
           <nav>
             <h6 className="footer-title">Company</h6>

@@ -33,7 +33,7 @@ export default function Login() {
             <h1 className="text-4xl font-bold text-red-500 mb-2">
               Portal Alumni
             </h1>
-            <p className="text-gray-400 text-sm">
+            <p className="elegant-text text-gray-300 text-base">
               Selamat datang di Portal Alumni Teknik Informatika
             </p>
           </div>
@@ -119,8 +119,8 @@ export default function Login() {
         {/* Decorative Shapes */}
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
-            src="/tengkorak.jpeg"
-            alt="Tengkorak"
+            src="/kampus03.png"
+            alt="kampus03"
             width={1200}
             height={800}
             className="object-cover w-full h-full opacity-80"
