@@ -6,39 +6,37 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const [nim, setNim] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState(null);
-  const router = useRouter();
+  // const [nim, setNim] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [rememberMe, setRememberMe] = useState(false);
+  // const [error, setError] = useState(null);
+  // const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
+  // const handleLogin = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setError(null);
 
-    try {
-      const res = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nim, password }),
-        credentials: "include",
-      });
+  //   try {
+  //     const res = await fetch("http://localhost:3001/api/auth/login", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ nim, password }),
+  //       credentials: "include",
+  //     });
 
-      const data = await res.json();
+  //     const data = await res.json();
 
-      if (res.ok) {
-        // console.log("Login attempt:", { nim, password, rememberMe });
-        // localStorage.setItem("userToken", data.token);
-        router.push("/dashboard");
-      } else {
-        setError(data.message || "Login Gagal");
-      }
-    } catch (err) {
-      setError(error);
-    }
-  };
+  //     if (res.ok) {
+  //       router.push("/dashboard");
+  //     } else {
+  //       setError(data.message || "Login Gagal");
+  //     }
+  //   } catch (err) {
+  //     setError(error);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex">
@@ -65,14 +63,15 @@ export default function Login() {
           </div>
 
           {/* Form Login */}
-          <form onSubmit={handleLogin} className="space-y-6">
+          {/*<form onSubmit={handleLogin} className="space-y-6">*/}
+          <form className="space-y-6">
             {/* Email Input */}
             <div>
               <label className="block text-gray-300 text-sm mb-2">NIM</label>
               <input
                 type="text"
-                value={nim}
-                onChange={(e) => setNim(e.target.value)}
+                // value={nim}
+                // onChange={(e) => setNim(e.target.value)}
                 placeholder="Enter NIM"
                 className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 required
@@ -86,8 +85,8 @@ export default function Login() {
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                // value={password}
+                // onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
                 className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 required
@@ -99,8 +98,8 @@ export default function Login() {
               <input
                 type="checkbox"
                 id="remember"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                // checked={rememberMe}
+                // onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 rounded border-gray-400 text-blue-600 focus:ring-2 focus:ring-blue-500"
               />
               <label
