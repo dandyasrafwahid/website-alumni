@@ -1,35 +1,35 @@
 // "use client";
 
 // import { useEffect, useState } from "react";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
 
-async function getDataAlumni() {
-  const cookieStore = await cookies();
-  const authToken = cookieStore.get("authToken")?.value;
+// async function getDataAlumni() {
+//   const cookieStore = await cookies();
+//   const authToken = cookieStore.get("authToken")?.value;
 
-  if (!authToken) {
-    return null;
-  }
+//   if (!authToken) {
+//     return null;
+//   }
 
-  const res = await fetch("http://localhost:3001/api/getDataAlumni/", {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${authToken}`,
-    },
-    cache: "no-store",
-  });
+//   const res = await fetch("http://localhost:3001/api/getDataAlumni/", {
+//     method: "GET",
+//     credentials: "include",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `${authToken}`,
+//     },
+//     cache: "no-store",
+//   });
 
-  if (!res.ok) {
-    return null;
-  }
+//   if (!res.ok) {
+//     return null;
+//   }
 
-  return res.json();
-}
+//   return res.json();
+// }
 
 export default async function Profil() {
-  const profile = await getDataAlumni();
+  // const profile = await getDataAlumni();
 
   return (
     <main className="pr-4 pl-4 md:ml-64 h-auto pt-20">
@@ -62,7 +62,7 @@ export default async function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      {profile.data.name}
+                      {/*{profile.data.name}*/}
                     </td>
                   </tr>
 
@@ -74,7 +74,7 @@ export default async function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      {profile.data.nim}
+                      {/*{profile.data.nim}*/}
                     </td>
                   </tr>
 
@@ -86,7 +86,7 @@ export default async function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      {profile.data.email}
+                      {/*{profile.data.email}*/}
                     </td>
                   </tr>
 
@@ -98,7 +98,7 @@ export default async function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      {profile.data.gender}
+                      {/*{profile.data.gender}*/}
                     </td>
                   </tr>
 
@@ -110,7 +110,7 @@ export default async function Profil() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
-                      {profile.data.no_wa}
+                      {/*{profile.data.no_wa}*/}
                     </td>
                   </tr>
 
@@ -123,7 +123,7 @@ export default async function Profil() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-800">
                       <div className="font-medium">
-                        {profile.data.tmpt_tinggal}
+                        {/*{profile.data.tmpt_tinggal}*/}
                       </div>
                     </td>
                   </tr>
