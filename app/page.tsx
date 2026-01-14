@@ -17,7 +17,9 @@ export default function Home() {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       {/* Konten utama halaman */}
-      <div id="main-content" className="drawer-content flex flex-col bg-white pt-3 min-h-screen">
+      <div
+        id="main-content"
+        className="drawer-content flex flex-col bg-white pt-3 min-h-screen">
         {/* Navbar atas — menggunakan komponen Navbar */}
         <Navbar />
 
@@ -27,12 +29,12 @@ export default function Home() {
             <div className="flex flex-row px-16 gap-x-32">
               {/* Kolom teks kiri — judul, deskripsi, dan tombol aksi */}
               <div className="flex flex-col flex-1 gap-y-16">
-                <span className="font-bold text-5xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-2xl">
+                <span className="font-bold text-5xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-2xl text-white">
                   Website Resmi <br /> Alumni Teknik Informatika Universitas
                   Hasanuddin
                 </span>
 
-                <span className="font-medium text-xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-white">
+                <span className="font-medium text-xl transition-all duration-300 ease-out cursor-pointer hover:scale-105 hover:drop-shadow-lg hover:text-white text-white">
                   Sarana komunikasi dan kolaborasi alumni, mahasiswa, dan
                   civitas akademika dalam mewujudkan kontribusi nyata di bidang
                   teknologi dan pendidikan.
@@ -257,7 +259,7 @@ export default function Home() {
         {/* Bagian konten about us*/}
         <div
           id="about-section"
-          className="w-full bg-gradient-to-b from-blue-50 to-white py-16 px-6">
+          className="w-full bg-linear-to-b from-blue-50 to-white py-16 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-12 items-center">
               {/* Kolom kiri - Konten teks */}
