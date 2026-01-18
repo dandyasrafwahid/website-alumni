@@ -274,7 +274,7 @@ export default function Home() {
                   membangun jejaring yang bermanfaat.
                 </p>
 
-                {/* Contact info */}
+                {/* Footer Section */}
                 <div className="bg-gray-50 rounded-lg p-6 mt-8">
                   <p className="text-gray-600 font-semibold mb-3">
                     Info lebih lanjut silahkan menghubungi :

@@ -1,9 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function HomeUser() {
+  const router = useRouter();
+
+  const handleUpdateProfile = () => {
+    router.push("/perbaruiprofil");
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -30,7 +38,7 @@ export default function HomeUser() {
               <h1 className="text-4xl lg:text-6xl font-extrabold uppercase tracking-wide mt-4 leading-tight">
                 ALWAN INDRAWAN
                 <br />
-                AZIS!   
+                AZIS!
               </h1>
 
               <p className="mt-6 text-base lg:text-lg text-gray-200 max-w-xl leading-relaxed">
@@ -86,7 +94,9 @@ export default function HomeUser() {
                   </p>
 
                   <div className="mt-6">
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
+                    <button
+                      onClick={handleUpdateProfile}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md cursor-pointer transition-colors">
                       Perbarui Profil
                     </button>
                   </div>
@@ -96,6 +106,85 @@ export default function HomeUser() {
           </div>
         </div>
       </main>
+
+      {/* Bagian konten about us*/}
+      <div
+        id="about-section"
+        className="w-full bg-linear-to-b from-blue-50 to-white py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            {/* Kolom kiri - Konten teks */}
+            <div className="flex-1">
+              <div className="mb-6">
+                <span className="text-blue-500 font-semibold text-sm tracking-wide uppercase">
+                  APA YANG KAMI BERIKAN?
+                </span>
+              </div>
+
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
+                <span className="text-blue-500">Tentang Kami</span>
+              </h2>
+
+              <p className="text-gray-700 text-lg leading-relaxed mb-8 max-w-2xl">
+                Portal Alumni ini didirikan sebagai wadah untuk menjaga hubungan
+                antara alumni, universitas, dan mahasiswa saat ini. Tujuan kami
+                adalah memfasilitasi interaksi dan kolaborasi antara alumni,
+                berbagi pengalaman, informasi karir, dan membangun jejaring yang
+                bermanfaat.
+              </p>
+
+              {/* Contact info */}
+              <div className="bg-gray-50 rounded-lg p-6 mt-8">
+                <p className="text-gray-600 font-semibold mb-3">
+                  Info lebih lanjut silahkan menghubungi :
+                </p>
+                <div className="space-y-2 text-gray-700">
+                  <p className="flex items-center gap-2">
+                    <span className="text-blue-500 font-medium">✓</span>
+                    (+62)81253584528
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span className="text-blue-500 font-medium">✓</span>
+                    (+62)81243278997
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span className="text-blue-500 font-medium">✓</span>
+                    (+62)81243278996
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <span className="text-blue-500 font-medium">✓</span>
+                    (+62)81243290809
+                  </p>
+                  <p className="flex items-center gap-2 mt-3">
+                    <span className="font-semibold text-gray-700">
+                      E-mail :
+                    </span>
+                    <span className="text-blue-600 hover:text-blue-700 cursor-pointer">
+                      informatika@unhas.ac.id
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Kolom kanan - Gambar */}
+            <div className="flex-1">
+              <div className="rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/kampus03.png"
+                  alt="Universitas Hasanuddin"
+                  width={600}
+                  height={400}
+                  className="w-full h-full object-cover"
+                  unoptimized
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
     </div>
   );
 }
