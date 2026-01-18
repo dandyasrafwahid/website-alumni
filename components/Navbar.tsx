@@ -71,7 +71,13 @@ export default function Navbar() {
       {/* Bagian kiri navbar: logo dan nama institusi */}
       <div className="navbar-start">
         <div className="flex flex-row items-center gap-x-4">
-          <Image src="/unhas-logo.png" alt="Unhas Logo" width={40} height={10} priority />
+          <Image
+            src="/unhas-logo.png"
+            alt="Unhas Logo"
+            width={40}
+            height={10}
+            priority
+          />
 
           <div className="flex flex-col text-black">
             <span className="font-normal text-sm">Universitas Hasanuddin</span>
@@ -84,13 +90,17 @@ export default function Navbar() {
       <div className="navbar-center">
         <ul className="menu menu-horizontal text-black font-medium text-xl flex items-center gap-4">
           <li className="relative group px-2">
-            <a href="#main-content" className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+            <a
+              href="#main-content"
+              className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer">
               Home
             </a>
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">Alumni</span>
+            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+              Alumni
+            </span>
           </li>
 
           <li className="relative group px-2">
@@ -104,11 +114,15 @@ export default function Navbar() {
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">Contact</span>
+            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+              News and Events
+            </span>
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">Survey</span>
+            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+              Survey
+            </span>
           </li>
         </ul>
       </div>
@@ -119,7 +133,14 @@ export default function Navbar() {
           <div className="relative group">
             <a href="/login" aria-label="Login">
               <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-3 py-1 text-base text-[#1E1E1E] flex items-center gap-3 transition-transform duration-200 group-hover:scale-105 hover:shadow-md">
-                <Image src="/logo login.png" alt="Login logo" width={28} height={28} className="rounded-full" priority />
+                <Image
+                  src="/logo login.png"
+                  alt="Login logo"
+                  width={28}
+                  height={28}
+                  className="rounded-full"
+                  priority
+                />
                 <span className="font-medium">Login</span>
               </button>
             </a>
@@ -131,19 +152,33 @@ export default function Navbar() {
             <button
               onClick={() => setMenuOpen((s) => !s)}
               className="flex items-center gap-3 bg-white border rounded-lg px-3 py-1 shadow-sm">
-              <span className="text-sm font-medium text-gray-800">{user.name.split(' ')[0]}</span>
-              <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">{user.initials}</div>
+              <span className="text-sm font-medium text-gray-800">
+                {user.name.split(" ")[0]}
+              </span>
+              <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
+                {user.initials}
+              </div>
             </button>
 
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border">
-                <div className="px-4 py-3 text-xs text-gray-400">Kelola Akun</div>
+                <div className="px-4 py-3 text-xs text-gray-400">
+                  Kelola Akun
+                </div>
                 <ul>
                   <li>
-                    <Link href="/profile" className="block px-4 py-3 hover:bg-gray-50">Profil</Link>
+                    <Link
+                      href="/profile"
+                      className="block px-4 py-3 hover:bg-gray-50">
+                      Profil
+                    </Link>
                   </li>
                   <li>
-                    <button onClick={logout} className="w-full text-left px-4 py-3 hover:bg-gray-50">Keluar</button>
+                    <button
+                      onClick={logout}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50">
+                      Keluar
+                    </button>
                   </li>
                 </ul>
               </div>

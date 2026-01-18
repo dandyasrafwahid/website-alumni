@@ -156,102 +156,94 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bagian konten tambahan di bawah hero — tampilkan kartu secara horizontal */}
+        {/* Bagian newslatter */}
         <div className="bg-white flex justify-center">
-          <div className="flex flex-row gap-8 px-8 py-12 items-start">
-            {/* Card 1 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
-              <figure>
-                <Image
-                  src="/DSC09820.JPG"
-                  alt="Alumni 1"
-                  width={320}
-                  height={176}
-                  className="object-cover h-44 w-full"
-                  unoptimized
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">Card Title</h2>
-                <p>
-                  A card component has a figure, a body part, and inside body
-                  there are title and actions parts
-                </p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Title</button>
+          <div className="w-full max-w-7xl relative">
+            <div className="flex flex-row gap-8 px-8 py-12 items-start overflow-x-auto">
+              {/* Card 1 - Sosok Alumni */}
+              <div className="flex-shrink-0 w-80 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Sosok Alumni"
+                    width={320}
+                    height={192}
+                    className="object-cover w-full h-full"
+                    unoptimized
+                  />
+                </div>
+                <div className="bg-white p-4">
+                  <h3 className="text-gray-800 font-semibold text-base line-clamp-2">
+                    Sosok Alumni
+                  </h3>
                 </div>
               </div>
-            </div>
 
-            {/* Card 2 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
-              <figure>
-                <Image
-                  src="/DSC09820.JPG"
-                  alt="Alumni 2"
-                  width={320}
-                  height={176}
-                  className="object-cover h-44 w-full"
-                  unoptimized
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">Card Title</h2>
-                <p>
-                  A card component has a figure, a body part, and inside body
-                  there are title and actions parts
-                </p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Title</button>
+              {/* Card 2 - Perayaan Maulid */}
+              <div className="flex-shrink-0 w-80 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Perayaan Maulid Universitas Hasanuddin"
+                    width={320}
+                    height={192}
+                    className="object-cover w-full h-full"
+                    unoptimized
+                  />
+                </div>
+                <div className="bg-white p-4">
+                  <h3 className="text-gray-800 font-semibold text-base line-clamp-2">
+                    Perayaan Maulid Universitas Hasanuddin, di tepi danau UNHAS
+                  </h3>
                 </div>
               </div>
-            </div>
-            {/* Card 3 */}
-            <div className="bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
-              <figure>
-                <Image
-                  src="/DSC09820.JPG"
-                  alt="Alumni 1"
-                  width={320}
-                  height={176}
-                  className="object-cover h-44 w-full"
-                  unoptimized
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">Card Title</h2>
-                <p>
-                  A card component has a figure, a body part, and inside body
-                  there are title and actions parts
-                </p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Title</button>
-                </div>
-              </div>
-            </div>
 
-            {/* Card 4 */}
-            <div className="card bg-[#354E96] w-80 shadow-sm rounded-xl overflow-hidden">
-              <figure>
-                <Image
-                  src="/DSC09820.JPG"
-                  alt="Alumni 2"
-                  width={320}
-                  height={176}
-                  className="object-cover h-44 w-full"
-                  unoptimized
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">Card Title</h2>
-                <p>
-                  A card component has a figure, a body part, and inside body
-                  there are title and actions parts
-                </p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Title</button>
+              {/* Card 3 - Employer Meeting */}
+              <div className="flex-shrink-0 w-80 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Employer Meeting"
+                    width={320}
+                    height={192}
+                    className="object-cover w-full h-full"
+                    unoptimized
+                  />
+                </div>
+                <div className="bg-white p-4">
+                  <h3 className="text-gray-800 font-semibold text-base line-clamp-2">
+                    Employer Meeting: Memperkuat Kesiapan Lulusan Universitas
+                    Hasanuddin di Dunia Industri
+                  </h3>
                 </div>
               </div>
+
+              {/* Card 4 - Lomba Kaddo' */}
+              <div className="flex-shrink-0 w-80 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                <div className="relative h-48 w-full">
+                  <Image
+                    src="/DSC09820.JPG"
+                    alt="Lomba Kaddo' Minnya'"
+                    width={320}
+                    height={192}
+                    className="object-cover w-full h-full"
+                    unoptimized
+                  />
+                </div>
+                <div className="bg-white p-4">
+                  <h3 className="text-gray-800 font-semibold text-base line-clamp-2">
+                    Lomba Kaddo' Minnya', Meriahkan Dies Natalis ke-69 Unhas!
+                  </h3>
+                </div>
+              </div>
+            </div>
+            {/* Tombol Lihat Berita Selengkapnya */}
+            <div className="flex justify-end px-8 py-4">
+              <a
+                href="#"
+                className="text-blue-500 font-semibold text-base hover:text-blue-600 transition-colors">
+                Lihat Berita Selengkapnya →
+              </a>
             </div>
           </div>
         </div>
