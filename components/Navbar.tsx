@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -18,8 +18,25 @@ export default function Navbar() {
     }
   });
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,8 +83,46 @@ export default function Navbar() {
     }
   }
 
+  function handleAboutClick() {
+    if (pathname !== "/") {
+      // Jika tidak di halaman utama, navigate ke halaman utama dulu
+      router.push("/");
+      setTimeout(() => {
+        const aboutSection = document.getElementById("about-section");
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 300);
+    } else {
+      // Jika sudah di halaman utama, langsung scroll ke about section
+      const aboutSection = document.getElementById("about-section");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }
+
+  function handleJobsClick() {
+    router.push("/jobs");
+  }
+
+  function handleAlumniClick() {
+    // Navigate ke halaman alumni (jika ada, atau adjust sesuai route yang ada)
+    router.push("/alumni");
+  }
+
+  function handleNewsClick() {
+    // Navigate ke halaman news and events
+    router.push("/news");
+  }
+
+  function handleSurveyClick() {
+    // Navigate ke halaman survey
+    router.push("/survey");
+  }
+
   return (
-    <div className="navbar bg-white w-full px-6 py-3 sticky top-0 left-0 z-50">
+    <div className="navbar bg-[#1E3A8A] w-full px-6 py-3 sticky top-0 left-0 z-50">
       {/* Tombol hamburger hanya tampil di layar kecil */}
       <div className="flex-none lg:hidden">
         <label
@@ -79,7 +134,7 @@ export default function Navbar() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            className="inline-block h-6 w-6 stroke-current">
+            className="inline-block h-6 w-6 stroke-white">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -100,7 +155,7 @@ export default function Navbar() {
             priority
           />
 
-          <div className="flex flex-col text-black">
+          <div className="flex flex-col text-white">
             <span className="font-normal text-sm">Universitas Hasanuddin</span>
             <span className="font-bold text-sm">Department of Informatics</span>
           </div>
@@ -109,51 +164,57 @@ export default function Navbar() {
 
       {/* Menu navigasi tengah */}
       <div className="navbar-center">
-        <ul className="menu menu-horizontal text-black font-medium text-xl flex items-center gap-4">
+        <ul className="menu menu-horizontal text-white font-medium text-xl flex items-center gap-4">
           <li className="relative group px-2">
             <button
               onClick={handleHomeClick}
-              className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0">
+              className="font-extrabold text-white transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0">
               Home
             </button>
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+            <button
+              onClick={handleAlumniClick}
+              className="transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 text-white">
               Alumni
-            </span>
+            </button>
           </li>
 
           <li className="relative group px-2">
-            <a
-              href="#about-section"
-              className={`transition-transform duration-200 group-hover:scale-110 cursor-pointer ${
-                isAboutActive ? "font-extrabold text-[#1E3A8A]" : "text-black"
+            <button
+              onClick={handleAboutClick}
+              className={`transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
+                isAboutActive ? "font-extrabold text-yellow-300" : "text-white"
               }`}>
               About
-            </a>
+            </button>
           </li>
 
           <li className="relative group px-2">
-            <a
-              href="/jobs"
-              className={`transition-transform duration-200 group-hover:scale-110 cursor-pointer ${
-                isJobsActive ? "font-extrabold text-[#1E3A8A]" : "text-black"
+            <button
+              onClick={handleJobsClick}
+              className={`transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
+                isJobsActive ? "font-extrabold text-yellow-300" : "text-white"
               }`}>
               jobs
-            </a>
+            </button>
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+            <button
+              onClick={handleNewsClick}
+              className="transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 text-white">
               News and Events
-            </span>
+            </button>
           </li>
 
           <li className="relative group px-2">
-            <span className="transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+            <button
+              onClick={handleSurveyClick}
+              className="transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 text-white">
               Survey
-            </span>
+            </button>
           </li>
         </ul>
       </div>
@@ -179,7 +240,7 @@ export default function Navbar() {
         )}
 
         {user && (
-          <div className="relative">
+          <div className="relative" ref={menuRef}>
             <button
               onClick={() => setMenuOpen((s) => !s)}
               className="flex items-center gap-3 bg-white border rounded-lg px-3 py-1 shadow-sm">
@@ -200,14 +261,14 @@ export default function Navbar() {
                   <li>
                     <Link
                       href="/profile"
-                      className="block px-4 py-3 hover:bg-gray-50">
+                      className="block px-4 py-3 hover:bg-gray-50 text-black">
                       Profil
                     </Link>
                   </li>
                   <li>
                     <button
                       onClick={logout}
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50">
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 text-black">
                       Keluar
                     </button>
                   </li>

@@ -25,7 +25,7 @@ export default function HomeUser() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-[#0f3a4f] opacity-80"></div>
+          <div className="absolute inset-0 bg-[#1E3A8A] opacity-90"></div>
         </div>
 
         <div className="relative z-10 max-w-5x1mx-auto px-6 lg:px-12 py-20">
