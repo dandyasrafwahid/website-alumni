@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isAboutActive, setIsAboutActive] = useState(false);
+  const [isJobsActive, setIsJobsActive] = useState(false);
   const [user, setUser] = useState(() => {
     if (typeof window === "undefined") return null;
     try {
@@ -18,6 +19,7 @@ export default function Navbar() {
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +36,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsJobsActive(pathname === "/jobs");
+  }, [pathname]);
+
   function logout() {
     try {
       localStorage.removeItem("alumniUser");
@@ -42,7 +48,22 @@ export default function Navbar() {
     }
     setUser(null);
     setMenuOpen(false);
-    router.push("/login");
+    router.push("/");
+  }
+
+  function handleHomeClick() {
+    if (user) {
+      router.push("/homeuser");
+    } else {
+      router.push("/");
+      // Scroll to main content jika di halaman yang sama
+      setTimeout(() => {
+        const mainContent = document.getElementById("main-content");
+        if (mainContent) {
+          mainContent.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
   }
 
   return (
@@ -90,11 +111,11 @@ export default function Navbar() {
       <div className="navbar-center">
         <ul className="menu menu-horizontal text-black font-medium text-xl flex items-center gap-4">
           <li className="relative group px-2">
-            <a
-              href="#main-content"
-              className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer">
+            <button
+              onClick={handleHomeClick}
+              className="font-extrabold text-[#1E3A8A] transition-transform duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0">
               Home
-            </a>
+            </button>
           </li>
 
           <li className="relative group px-2">
@@ -110,6 +131,16 @@ export default function Navbar() {
                 isAboutActive ? "font-extrabold text-[#1E3A8A]" : "text-black"
               }`}>
               About
+            </a>
+          </li>
+
+          <li className="relative group px-2">
+            <a
+              href="/jobs"
+              className={`transition-transform duration-200 group-hover:scale-110 cursor-pointer ${
+                isJobsActive ? "font-extrabold text-[#1E3A8A]" : "text-black"
+              }`}>
+              jobs
             </a>
           </li>
 
