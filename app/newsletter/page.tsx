@@ -76,12 +76,12 @@ export default function Newsletter() {
       <div className="relative bg-[#0F3555] pt-32 pb-24 overflow-hidden">
         {/* Background Image Overlay (Optional, biar ada tekstur seperti di gambar) */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
-             <Image 
-                src="/DSC09820.JPG" 
-                alt="bg-texture" 
-                fill 
-                className="object-cover grayscale"
-             />
+          <Image
+            src="/DSC09820.JPG"
+            alt="bg-texture"
+            fill
+            className="object-cover grayscale"
+          />
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center lg:text-left">
@@ -100,19 +100,16 @@ export default function Newsletter() {
             className="w-full h-12 md:h-24 text-gray-50"
             viewBox="0 0 1440 320"
             fill="currentColor"
-            preserveAspectRatio="none"
-          >
+            preserveAspectRatio="none">
             <path
               fillOpacity="1"
-              d="M0,224L80,213.3C160,203,320,181,480,181.3C640,181,800,203,960,202.7C1120,203,1280,181,1360,170.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
-            ></path>
+              d="M0,224L80,213.3C160,203,320,181,480,181.3C640,181,800,203,960,202.7C1120,203,1280,181,1360,170.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
           </svg>
         </div>
       </div>
 
       {/* --- MAIN CONTENT --- */}
       <div className="container mx-auto px-6 py-12 flex-grow">
-        
         {/* Search Bar */}
         <div className="max-w-3xl mx-auto mb-16 relative">
           <div className="relative">
@@ -122,8 +119,7 @@ export default function Newsletter() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+                stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -147,8 +143,7 @@ export default function Newsletter() {
           {newsletter.map((item) => (
             <div
               key={item.id}
-              className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer h-[450px]"
-            >
+              className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer h-[450px]">
               {/* Image Cover */}
               <div className="absolute inset-0">
                 <Image
@@ -179,7 +174,7 @@ export default function Newsletter() {
                 <p className="text-sm text-gray-300 mb-4 font-light">
                   {item.edition}
                 </p>
-                
+
                 {/* Deskripsi (Hanya muncul saat hover seperti gambar referensi) */}
                 <p className="text-white text-sm leading-relaxed mb-6 italic line-clamp-4">
                   "{item.desc}"

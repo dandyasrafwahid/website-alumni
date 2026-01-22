@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function Navbar() {
-  // State khusus untuk About karena dia bergantung pada Scroll di halaman Home
+  // State untuk mendeteksi apakah user sedang scroll di area About
   const [isAboutActive, setIsAboutActive] = useState(false);
 
   const [user, setUser] = useState(() => {
@@ -24,7 +24,7 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // --- HANDLER KLIK DI LUAR (DROPDOWN) ---
+  // --- 1. HANDLE CLICK OUTSIDE (MOBILE MENU) ---
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -35,9 +35,9 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
-  // --- HANDLER SCROLL SPY (KHUSUS ABOUT) ---
+  // --- 2. SCROLL SPY UNTUK ABOUT ---
   useEffect(() => {
-    // Jika tidak di halaman Home ('/'), matikan highlight About
+    // Jika pindah ke halaman lain (misal /jobs), matikan highlight About
     if (pathname !== "/") {
       setIsAboutActive(false);
       return;
@@ -47,30 +47,35 @@ export default function Navbar() {
       const aboutSection = document.getElementById("about-section");
       if (aboutSection) {
         const rect = aboutSection.getBoundingClientRect();
-        // Aktif jika bagian About terlihat di layar
+        // Aktif jika bagian atas About masuk ke area pandang
         setIsAboutActive(rect.top < window.innerHeight && rect.bottom > 0);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Cek awal
+    handleScroll(); // Cek posisi awal
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname]); 
+  }, [pathname]);
 
-  // --- FUNGSI LOGOUT ---
+  // --- 3. HELPER UNTUK CEK ACTIVE STATE ---
+  // Fungsi ini menentukan apakah tombol harus berwarna kuning
+  const isActive = (path: string) => {
+    // Jika path persis sama, ATAU jika kita di sub-halaman (misal /news/detail)
+    return pathname === path || pathname.startsWith(path + "/");
+  };
+
+  // --- NAVIGASI ---
   function logout() {
-    try {
-      localStorage.removeItem("alumniUser");
-    } catch { /* ignore */ }
+    try { localStorage.removeItem("alumniUser"); } catch {}
     setUser(null);
     setMenuOpen(false);
     router.push("/");
   }
 
-  // --- FUNGSI NAVIGASI UMUM ---
   function handleNav(path: string) {
     router.push(path);
+    setMenuOpen(false);
   }
 
   function handleHomeClick() {
@@ -82,6 +87,7 @@ export default function Navbar() {
          window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
+    setMenuOpen(false);
   }
 
   function handleAboutClick() {
@@ -95,16 +101,13 @@ export default function Navbar() {
       const section = document.getElementById("about-section");
       if (section) section.scrollIntoView({ behavior: "smooth" });
     }
+    setMenuOpen(false);
   }
-
-  // --- HELPER UNTUK CEK APAKAH TAB AKTIF ---
-  // Fungsi ini mengecek apakah URL browser sama dengan URL tombol
-  const isActive = (path: string) => pathname === path;
 
   return (
     <div className="navbar bg-[#1E3A8A] w-full px-6 py-3 fixed top-0 left-0 right-0 z-50 shadow-md">
       
-      {/* Tombol Hamburger (Mobile) */}
+      {/* Mobile Hamburger */}
       <div className="flex-none lg:hidden">
         <label htmlFor="my-drawer-2" aria-label="open sidebar" className="btn btn-square btn-ghost">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-6 w-6 stroke-white">
@@ -113,7 +116,7 @@ export default function Navbar() {
         </label>
       </div>
 
-      {/* Logo Area */}
+      {/* Logo */}
       <div className="navbar-start">
         <div className="flex flex-row items-center gap-x-4">
           <Image src="/unhas-logo.png" alt="Unhas Logo" width={40} height={10} priority />
@@ -124,7 +127,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MENU TENGAH */}
+      {/* MENU DESKTOP */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal text-white font-medium text-xl flex items-center gap-4">
           
@@ -133,7 +136,7 @@ export default function Navbar() {
             <button
               onClick={handleHomeClick}
               className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                // Home kuning jika: URL adalah '/' DAN About TIDAK aktif
+                // Kuning jika: URL adalah "/" DAN About TIDAK aktif
                 pathname === "/" && !isAboutActive ? "font-extrabold text-yellow-300" : "text-white"
               }`}>
               Home
@@ -156,7 +159,7 @@ export default function Navbar() {
             <button
               onClick={handleAboutClick}
               className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                // About kuning jika: state isAboutActive bernilai true (terkena scroll)
+                // Kuning jika: Scroll Spy mendeteksi area About
                 isAboutActive ? "font-extrabold text-yellow-300" : "text-white"
               }`}>
               About
@@ -170,7 +173,18 @@ export default function Navbar() {
               className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
                 isActive("/jobs") ? "font-extrabold text-yellow-300" : "text-white"
               }`}>
-              Jobs
+              jobs
+            </button>
+          </li>
+
+          {/* NEWS AND EVENTS */}
+          <li className="relative group px-2">
+            <button
+              onClick={() => handleNav("/newsandevents")}
+              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
+                isActive("/news") ? "font-extrabold text-yellow-300" : "text-white"
+              }`}>
+              News and Events
             </button>
           </li>
 
@@ -199,7 +213,7 @@ export default function Navbar() {
         </ul>
       </div>
 
-      {/* Bagian Kanan (Login/User) */}
+      {/* Bagian Kanan (User/Login) */}
       <div className="navbar-end gap-5">
         {!user && (
           <div className="relative group">
