@@ -73,7 +73,7 @@ export default function Newsletter() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <div className="relative bg-[#0F3555] pt-32 pb-24 overflow-hidden">
+      <div className="relative bg-[#1E3A8A] pt-32 pb-24 overflow-hidden">
         {/* Background Image Overlay (Optional, biar ada tekstur seperti di gambar) */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <Image

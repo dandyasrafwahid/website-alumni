@@ -5,11 +5,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
+// 1. Definisi Tipe Data User
+interface User {
+  name: string;
+  initials: string;
+  // Tambahkan properti lain jika ada (misal: email, nim, dll)
+}
+
 export default function Navbar() {
   // State untuk mendeteksi apakah user sedang scroll di area About
-  const [isAboutActive, setIsAboutActive] = useState(false);
+  const [isAboutActive, setIsAboutActive] = useState<boolean>(false);
 
-  const [user, setUser] = useState(() => {
+  // State User dengan tipe Union (User atau null)
+  const [user, setUser] = useState<User | null>(() => {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem("alumniUser");
@@ -19,25 +27,31 @@ export default function Navbar() {
     }
   });
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  
+  // 2. Typing untuk useRef (HTMLDivElement karena merujuk ke div)
   const menuRef = useRef<HTMLDivElement>(null);
+  
   const router = useRouter();
   const pathname = usePathname();
 
   // --- 1. HANDLE CLICK OUTSIDE (MOBILE MENU) ---
   useEffect(() => {
+    // Event listener mouse event
     const handleClickOutside = (event: MouseEvent) => {
+      // "as Node" digunakan untuk assertion agar TypeScript paham target adalah Node
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     };
+    
     if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
   // --- 2. SCROLL SPY UNTUK ABOUT ---
   useEffect(() => {
-    // Jika pindah ke halaman lain (misal /jobs), matikan highlight About
+    // Jika pindah ke halaman lain (bukan Home), matikan highlight About
     if (pathname !== "/") {
       setIsAboutActive(false);
       return;
@@ -47,22 +61,28 @@ export default function Navbar() {
       const aboutSection = document.getElementById("about-section");
       if (aboutSection) {
         const rect = aboutSection.getBoundingClientRect();
-        // Aktif jika bagian atas About masuk ke area pandang
-        setIsAboutActive(rect.top < window.innerHeight && rect.bottom > 0);
+        // Logika: Aktif jika bagian About masuk ke area pandang user (offset setengah layar)
+        setIsAboutActive(rect.top < window.innerHeight / 2 && rect.bottom > 0);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Cek posisi awal
+    handleScroll(); // Cek posisi awal saat mount
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
   // --- 3. HELPER UNTUK CEK ACTIVE STATE ---
-  // Fungsi ini menentukan apakah tombol harus berwarna kuning
-  const isActive = (path: string) => {
-    // Jika path persis sama, ATAU jika kita di sub-halaman (misal /news/detail)
+  const isActive = (path: string): boolean => {
+    if (path === "/") return pathname === "/";
     return pathname === path || pathname.startsWith(path + "/");
+  };
+
+  // --- 4. HELPER CLASS UNTUK WARNA ---
+  const getItemClass = (isActiveCondition: boolean): string => {
+    return `transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
+      isActiveCondition ? "font-extrabold text-yellow-300" : "text-white"
+    }`;
   };
 
   // --- NAVIGASI ---
@@ -84,7 +104,7 @@ export default function Navbar() {
     } else {
       router.push("/");
       if (pathname === "/") {
-         window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
     setMenuOpen(false);
@@ -96,7 +116,7 @@ export default function Navbar() {
       setTimeout(() => {
         const section = document.getElementById("about-section");
         if (section) section.scrollIntoView({ behavior: "smooth" });
-      }, 300);
+      }, 500); 
     } else {
       const section = document.getElementById("about-section");
       if (section) section.scrollIntoView({ behavior: "smooth" });
@@ -135,10 +155,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={handleHomeClick}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                // Kuning jika: URL adalah "/" DAN About TIDAK aktif
-                pathname === "/" && !isAboutActive ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(pathname === "/" && !isAboutActive)}>
               Home
             </button>
           </li>
@@ -147,9 +164,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={() => handleNav("/alumni")}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                isActive("/alumni") ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(isActive("/alumni"))}>
               Alumni
             </button>
           </li>
@@ -158,10 +173,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={handleAboutClick}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                // Kuning jika: Scroll Spy mendeteksi area About
-                isAboutActive ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(isAboutActive)}>
               About
             </button>
           </li>
@@ -170,10 +182,8 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={() => handleNav("/jobs")}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                isActive("/jobs") ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
-              jobs
+              className={getItemClass(isActive("/jobs"))}>
+              Jobs
             </button>
           </li>
 
@@ -181,9 +191,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={() => handleNav("/newsandevents")}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                isActive("/news") ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(isActive("/newsandevents"))}>
               News and Events
             </button>
           </li>
@@ -192,9 +200,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={() => handleNav("/newsletter")}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                isActive("/newsletter") ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(isActive("/newsletter"))}>
               Newsletter
             </button>
           </li>
@@ -203,9 +209,7 @@ export default function Navbar() {
           <li className="relative group px-2">
             <button
               onClick={() => handleNav("/survey")}
-              className={`transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
-                isActive("/survey") ? "font-extrabold text-yellow-300" : "text-white"
-              }`}>
+              className={getItemClass(isActive("/survey"))}>
               Survey
             </button>
           </li>

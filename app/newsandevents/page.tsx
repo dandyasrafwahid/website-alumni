@@ -64,7 +64,7 @@ export default function NewsEventsPage() {
 
       {/* --- HERO SECTION --- */}
       {/* Background biru tua dengan judul dan deskripsi */}
-      <div className="relative bg-[#083353] pt-32 pb-32 overflow-hidden">
+      <div className="relative bg-[#1E3A8A] pt-32 pb-32 overflow-hidden">
         {/* Overlay Gambar Background (Opsional) */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
            <Image 
