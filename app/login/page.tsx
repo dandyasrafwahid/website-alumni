@@ -4,6 +4,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // 1. IMPORT LINK DISINI
 
 export default function Login() {
   const [nim, setNim] = useState("");
@@ -59,9 +60,8 @@ export default function Login() {
           </div>
 
           {/* Form Login */}
-          {/*<form onSubmit={handleLogin} className="space-y-6">*/}
           <form onSubmit={handleLogin} className="space-y-6">
-            {/* Email Input */}
+            {/* NIM Input */}
             <div>
               <label className="block text-gray-300 text-sm mb-2">NIM</label>
               <input
@@ -125,11 +125,12 @@ export default function Login() {
             </p>
             <p className="text-gray-400 text-sm">
               Tidak punya akun?{" "}
-              <a
-                href="#"
+              {/* 2. MENGGUNAKAN LINK UNTUK PINDAH HALAMAN */}
+              <Link
+                href="/register"
                 className="text-blue-400 hover:text-blue-300 font-semibold">
                 Daftar
-              </a>
+              </Link>
             </p>
           </div>
         </div>
