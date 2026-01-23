@@ -32,6 +32,6 @@
     ".next\\dev/types/**/*.ts",
     ".next\\dev/types/**/*.ts",
     "app/homeuser/perbaruiprofil/page.tsx"
-, "app/homeuser/profil"  ],
+, "app/homeuser/profile"  ],
   "exclude": ["node_modules"]
 }
