@@ -5,19 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
-// 1. Definisi Tipe Data User
-interface User {
-  name: string;
-  initials: string;
-  // Tambahkan properti lain jika ada (misal: email, nim, dll)
-}
-
 export default function Navbar() {
   // State untuk mendeteksi apakah user sedang scroll di area About
-  const [isAboutActive, setIsAboutActive] = useState<boolean>(false);
+  const [isAboutActive, setIsAboutActive] = useState(false);
 
-  // State User dengan tipe Union (User atau null)
-  const [user, setUser] = useState<User | null>(() => {
+  // Ambil data user dari localStorage
+  const [user, setUser] = useState(() => {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem("alumniUser");
@@ -27,31 +20,25 @@ export default function Navbar() {
     }
   });
 
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  
-  // 2. Typing untuk useRef (HTMLDivElement karena merujuk ke div)
+  const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
   const router = useRouter();
   const pathname = usePathname();
 
   // --- 1. HANDLE CLICK OUTSIDE (MOBILE MENU) ---
   useEffect(() => {
-    // Event listener mouse event
     const handleClickOutside = (event: MouseEvent) => {
-      // "as Node" digunakan untuk assertion agar TypeScript paham target adalah Node
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
     };
-    
     if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
   // --- 2. SCROLL SPY UNTUK ABOUT ---
   useEffect(() => {
-    // Jika pindah ke halaman lain (bukan Home), matikan highlight About
+    // Jika pindah ke halaman lain, matikan highlight About
     if (pathname !== "/") {
       setIsAboutActive(false);
       return;
@@ -61,25 +48,25 @@ export default function Navbar() {
       const aboutSection = document.getElementById("about-section");
       if (aboutSection) {
         const rect = aboutSection.getBoundingClientRect();
-        // Logika: Aktif jika bagian About masuk ke area pandang user (offset setengah layar)
+        // Aktif jika bagian About terlihat di layar
         setIsAboutActive(rect.top < window.innerHeight / 2 && rect.bottom > 0);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Cek posisi awal saat mount
+    handleScroll(); 
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
   // --- 3. HELPER UNTUK CEK ACTIVE STATE ---
-  const isActive = (path: string): boolean => {
-    if (path === "/") return pathname === "/";
+  const isActive = (path: string) => {
+    // Cek kesamaan persis atau sub-path (misal: /news/detail)
     return pathname === path || pathname.startsWith(path + "/");
   };
 
-  // --- 4. HELPER CLASS UNTUK WARNA ---
-  const getItemClass = (isActiveCondition: boolean): string => {
+  // --- 4. HELPER CLASS UNTUK WARNA (Cleaner Code) ---
+  const getItemClass = (isActiveCondition: boolean) => {
     return `transition-all duration-200 group-hover:scale-110 cursor-pointer bg-none border-none p-0 ${
       isActiveCondition ? "font-extrabold text-yellow-300" : "text-white"
     }`;
@@ -104,7 +91,7 @@ export default function Navbar() {
     } else {
       router.push("/");
       if (pathname === "/") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
     setMenuOpen(false);
@@ -116,7 +103,7 @@ export default function Navbar() {
       setTimeout(() => {
         const section = document.getElementById("about-section");
         if (section) section.scrollIntoView({ behavior: "smooth" });
-      }, 500); 
+      }, 300);
     } else {
       const section = document.getElementById("about-section");
       if (section) section.scrollIntoView({ behavior: "smooth" });
@@ -127,7 +114,7 @@ export default function Navbar() {
   return (
     <div className="navbar bg-[#1E3A8A] w-full px-6 py-3 fixed top-0 left-0 right-0 z-50 shadow-md">
       
-      {/* Mobile Hamburger */}
+      {/* Tombol Hamburger (Mobile) */}
       <div className="flex-none lg:hidden">
         <label htmlFor="my-drawer-2" aria-label="open sidebar" className="btn btn-square btn-ghost">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-6 w-6 stroke-white">
@@ -136,7 +123,7 @@ export default function Navbar() {
         </label>
       </div>
 
-      {/* Logo */}
+      {/* Logo Area */}
       <div className="navbar-start">
         <div className="flex flex-row items-center gap-x-4">
           <Image src="/unhas-logo.png" alt="Unhas Logo" width={40} height={10} priority />
@@ -147,7 +134,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* MENU DESKTOP */}
+      {/* MENU TENGAH */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal text-white font-medium text-xl flex items-center gap-4">
           
@@ -188,10 +175,11 @@ export default function Navbar() {
           </li>
 
           {/* NEWS AND EVENTS */}
+          {/* PERBAIKAN: Link disamakan ke /news agar isActive("/news") bekerja */}
           <li className="relative group px-2">
             <button
-              onClick={() => handleNav("/newsandevents")}
-              className={getItemClass(isActive("/newsandevents"))}>
+              onClick={() => handleNav("/news")} 
+              className={getItemClass(isActive("/news"))}>
               News and Events
             </button>
           </li>
@@ -217,7 +205,7 @@ export default function Navbar() {
         </ul>
       </div>
 
-      {/* Bagian Kanan (User/Login) */}
+      {/* Bagian Kanan (Login/User) */}
       <div className="navbar-end gap-5">
         {!user && (
           <div className="relative group">
@@ -246,7 +234,8 @@ export default function Navbar() {
                 <div className="px-4 py-3 text-xs text-gray-400">Kelola Akun</div>
                 <ul>
                   <li>
-                    <Link href="/profile" className="block px-4 py-3 hover:bg-gray-50 text-black">
+                    {/* PERBAIKAN: Link Profil mengarah ke folder struktur baru */}
+                    <Link href="/homeuser/profile" className="block px-4 py-3 hover:bg-gray-50 text-black">
                       Profil
                     </Link>
                   </li>
