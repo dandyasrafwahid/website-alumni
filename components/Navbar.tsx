@@ -178,7 +178,7 @@ export default function Navbar() {
           {/* PERBAIKAN: Link disamakan ke /news agar isActive("/news") bekerja */}
           <li className="relative group px-2">
             <button
-              onClick={() => handleNav("/news")} 
+              onClick={() => handleNav("/newsandevents")} 
               className={getItemClass(isActive("/news"))}>
               News and Events
             </button>
