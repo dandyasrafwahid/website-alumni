@@ -14,7 +14,18 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Save minimal user info to localStorage so Navbar can show account menu
+    // Get existing user data from localStorage if available
+    let existingUser: any = {};
+    try {
+      const storedData = localStorage.getItem("alumniUser");
+      if (storedData) {
+        existingUser = JSON.parse(storedData);
+      }
+    } catch {
+      // ignore
+    }
+
+    // Save user info to localStorage with account type
     const name = nim.trim() || "Alwan Indrawan Azis";
     const initials = name
       .split(" ")
@@ -25,13 +36,20 @@ export default function Login() {
     try {
       localStorage.setItem(
         "alumniUser",
-        JSON.stringify({ name: name, initials: initials })
+        JSON.stringify({
+          name: name,
+          nim: nim,
+          initials: initials,
+          // Pertahankan accountType jika sudah ada, default ke 'user'
+          accountType: existingUser.accountType || "user",
+          nip: existingUser.nip || "",
+        }),
       );
     } catch {
       // ignore storage errors
     }
 
-    // Redirect to homeuser regardless of input
+    // Semua user (admin atau biasa) redirect ke homeuser
     router.push("/homeuser");
   };
 
@@ -124,8 +142,7 @@ export default function Login() {
               </a>
             </p>
             <p className="text-gray-400 text-sm">
-              Tidak punya akun?{" "}
-              {/* 2. MENGGUNAKAN LINK UNTUK PINDAH HALAMAN */}
+              Tidak punya akun? {/* 2. MENGGUNAKAN LINK UNTUK PINDAH HALAMAN */}
               <Link
                 href="/register"
                 className="text-blue-400 hover:text-blue-300 font-semibold">

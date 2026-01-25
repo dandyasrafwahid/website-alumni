@@ -1,7 +1,6 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -28,6 +27,23 @@ type StoredJob = JobFormPayload & {
   pdfUrl?: string;
 };
 
+type NewsletterItem = {
+  id: number;
+  title: string;
+  edition: string;
+  image: string;
+  uploadDate: string;
+};
+
+type NewsEventItem = {
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  date: string;
+  uploadDate: string;
+};
+
 const defaultJobForm: JobFormPayload = {
   title: "",
   company: "",
@@ -48,10 +64,56 @@ export default function ViewProfilePage() {
   const [jobFeedback, setJobFeedback] = useState<string | null>(null);
   const [pdfFileName, setPdfFileName] = useState<string>("");
 
+  // Admin Profile States
+  const [isEditingAdmin, setIsEditingAdmin] = useState(false);
+  const [adminProfileData, setAdminProfileData] = useState<any>(null);
+  const [adminFotoPreview, setAdminFotoPreview] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"newsletter" | "news">(
+    "newsletter",
+  );
+  const [newsletters, setNewsletters] = useState<NewsletterItem[]>([]);
+  const [newsEvents, setNewsEvents] = useState<NewsEventItem[]>([]);
+
   useEffect(() => {
     const stored = localStorage.getItem("alumniUser");
     if (stored) {
-      setUser(JSON.parse(stored));
+      const userData = JSON.parse(stored);
+      setUser(userData);
+
+      // Load admin data jika admin
+      if (userData.accountType === "admin") {
+        const adminProfile = localStorage.getItem(
+          `adminProfile_${userData.nip}`,
+        );
+        if (adminProfile) {
+          const profile = JSON.parse(adminProfile);
+          setAdminProfileData(profile);
+          if (profile.foto) {
+            setAdminFotoPreview(profile.foto);
+          }
+        } else {
+          setAdminProfileData({
+            nama: userData.name,
+            nip: userData.nip,
+            email: userData.email || "",
+            noHp: "",
+            departemen: "Teknik Informatika",
+            jabatan: "",
+            foto: "",
+          });
+        }
+
+        // Load newsletters dan news events
+        const storedNewsletters = localStorage.getItem("newsletters");
+        if (storedNewsletters) {
+          setNewsletters(JSON.parse(storedNewsletters));
+        }
+
+        const storedNews = localStorage.getItem("newsEvents");
+        if (storedNews) {
+          setNewsEvents(JSON.parse(storedNews));
+        }
+      }
     }
     setLoading(false);
   }, []);
@@ -124,6 +186,47 @@ export default function ViewProfilePage() {
     setPdfFileName("");
   };
 
+  const handleAdminFotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAdminFotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAdminInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setAdminProfileData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSaveAdminProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) return;
+
+    const updatedProfile = {
+      ...adminProfileData,
+      foto: adminFotoPreview,
+    };
+
+    localStorage.setItem(
+      `adminProfile_${user.nip}`,
+      JSON.stringify(updatedProfile),
+    );
+
+    setAdminProfileData(updatedProfile);
+    setIsEditingAdmin(false);
+    alert("Profil berhasil disimpan!");
+  };
+
   // Tampilan Loading
   if (loading) {
     return (
@@ -153,6 +256,268 @@ export default function ViewProfilePage() {
       </div>
     );
   }
+
+  // Render Admin Profile jika user adalah admin
+  if (user.accountType === "admin") {
+    return (
+      <div className="min-h-screen bg-gray-50 font-sans">
+        <Navbar />
+
+        <main className="relative min-h-screen pt-24 pb-12">
+          <div className="max-w-4xl mx-auto px-6 lg:px-12">
+            {/* Header */}
+            <div className="mb-8">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                    Profil Admin
+                  </h1>
+                  <p className="text-gray-600">
+                    Kelola informasi profil dan konten departemen
+                  </p>
+                </div>
+                {!isEditingAdmin && (
+                  <button
+                    onClick={() => setIsEditingAdmin(true)}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition">
+                    Edit Profil
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Profile Card */}
+            <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+              {isEditingAdmin ? (
+                // Edit Mode
+                <form onSubmit={handleSaveAdminProfile} className="space-y-6">
+                  {/* Foto Section */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      Foto Profil
+                    </label>
+                    <div className="flex gap-6">
+                      <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+                        {adminFotoPreview ? (
+                          <Image
+                            src={adminFotoPreview}
+                            alt="Foto"
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <span>Belum Ada Foto</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleAdminFotoChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <p className="text-xs text-gray-500 mt-2">
+                          Ukuran maksimal 5MB. Format: JPG, PNG
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Form Fields */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nama Lengkap
+                      </label>
+                      <input
+                        type="text"
+                        name="nama"
+                        value={adminProfileData?.nama || ""}
+                        onChange={handleAdminInputChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        NIP
+                      </label>
+                      <input
+                        type="text"
+                        name="nip"
+                        value={adminProfileData?.nip || ""}
+                        onChange={handleAdminInputChange}
+                        disabled
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed text-gray-600"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={adminProfileData?.email || ""}
+                        onChange={handleAdminInputChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        No HP / WA
+                      </label>
+                      <input
+                        type="tel"
+                        name="noHp"
+                        value={adminProfileData?.noHp || ""}
+                        onChange={handleAdminInputChange}
+                        placeholder="08xxxxxxxxxx"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Departemen
+                      </label>
+                      <input
+                        type="text"
+                        name="departemen"
+                        value={adminProfileData?.departemen || ""}
+                        onChange={handleAdminInputChange}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Jabatan
+                      </label>
+                      <input
+                        type="text"
+                        name="jabatan"
+                        value={adminProfileData?.jabatan || ""}
+                        onChange={handleAdminInputChange}
+                        placeholder="Contoh: Kepala Departemen"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-4 pt-4">
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition">
+                      Simpan Perubahan
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditingAdmin(false)}
+                      className="px-6 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-lg font-semibold transition">
+                      Batal
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                // View Mode
+                <div>
+                  {/* Profile Header */}
+                  <div className="flex gap-8 mb-8 pb-8 border-b border-gray-200">
+                    <div className="relative w-40 h-40 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+                      {adminFotoPreview ? (
+                        <Image
+                          src={adminFotoPreview}
+                          alt="Foto"
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <span>Belum Ada Foto</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex-grow">
+                      <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                        {adminProfileData?.nama}
+                      </h2>
+                      <div className="space-y-2 text-gray-600">
+                        <p>
+                          <span className="font-semibold">Jabatan:</span>{" "}
+                          {adminProfileData?.jabatan || "Belum diisi"}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Departemen:</span>{" "}
+                          {adminProfileData?.departemen}
+                        </p>
+                        <p>
+                          <span className="font-semibold">NIP:</span>{" "}
+                          {adminProfileData?.nip}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Email:</span>{" "}
+                          {adminProfileData?.email}
+                        </p>
+                        <p>
+                          <span className="font-semibold">No HP:</span>{" "}
+                          {adminProfileData?.noHp || "Belum diisi"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content Management */}
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">
+                      Kelola Konten
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
+                        <h4 className="font-semibold text-blue-900 mb-1">
+                          Newsletter ({newsletters.length})
+                        </h4>
+                        <p className="text-sm text-blue-700 mb-3">
+                          Upload dan kelola newsletter edisi terbaru
+                        </p>
+                        <a
+                          href="/homeuser#newsletter"
+                          className="text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                          Kelola Newsletter →
+                        </a>
+                      </div>
+
+                      <div className="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 transition">
+                        <h4 className="font-semibold text-purple-900 mb-1">
+                          Berita & Acara ({newsEvents.length})
+                        </h4>
+                        <p className="text-sm text-purple-700 mb-3">
+                          Upload dan kelola berita serta acara departemen
+                        </p>
+                        <a
+                          href="/homeuser#news"
+                          className="text-purple-600 hover:text-purple-800 text-sm font-semibold">
+                          Kelola Berita →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Render User Profile (tampilan normal)
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900">
@@ -561,8 +926,6 @@ export default function ViewProfilePage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
