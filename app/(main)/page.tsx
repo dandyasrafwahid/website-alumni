@@ -65,10 +65,12 @@ export default function Home() {
                 </span>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-                  <button className="bg-white rounded-md px-6 py-4 text-black font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform">
+                  <Link
+                    href="/alumni"
+                    className="bg-white rounded-md px-6 py-4 text-black font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform">
                     <LihatDaftarAlumniIcon className="text-black" width={32} />
                     <span>Lihat Daftar Alumni</span>
-                  </button>
+                  </Link>
 
                   <button className="border border-white rounded-md px-6 py-4 text-white font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform hover:bg-white/10">
                     <TentangAlumniIcon className="text-white" width={32} />

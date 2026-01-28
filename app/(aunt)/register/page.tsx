@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 // Menggunakan Link untuk navigasi internal yang lebih cepat
 import Link from "next/link";
+import PasswordToggle from "@/components/PasswordToggle";
 
 export default function Register() {
   const router = useRouter();
@@ -294,14 +295,13 @@ export default function Register() {
               <label className="block text-gray-300 text-sm mb-2 font-medium">
                 Password
               </label>
-              <input
-                type="password"
+              <PasswordToggle
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Buat Password"
-                className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
-                required
+                className="focus:ring-red-500"
+                required={true}
               />
             </div>
 

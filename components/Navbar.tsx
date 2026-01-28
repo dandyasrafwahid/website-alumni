@@ -9,21 +9,25 @@ export default function Navbar() {
   // State untuk mendeteksi apakah user sedang scroll di area About
   const [isAboutActive, setIsAboutActive] = useState(false);
 
-  // Ambil data user dari localStorage
-  const [user, setUser] = useState(() => {
-    if (typeof window === "undefined") return null;
-    try {
-      const raw = localStorage.getItem("alumniUser");
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
+  // Ambil data user dari localStorage (inisialisasi dengan null)
+  const [user, setUser] = useState<any>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+
+  // Load user data dari localStorage setelah component mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("alumniUser");
+      if (raw) {
+        setUser(JSON.parse(raw));
+      }
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    }
+  }, []);
 
   // --- 1. HANDLE CLICK OUTSIDE (MOBILE MENU) ---
   useEffect(() => {
@@ -54,7 +58,7 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); 
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
@@ -74,7 +78,9 @@ export default function Navbar() {
 
   // --- NAVIGASI ---
   function logout() {
-    try { localStorage.removeItem("alumniUser"); } catch {}
+    try {
+      localStorage.removeItem("alumniUser");
+    } catch {}
     setUser(null);
     setMenuOpen(false);
     router.push("/");
@@ -91,7 +97,7 @@ export default function Navbar() {
     } else {
       router.push("/");
       if (pathname === "/") {
-         window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
     setMenuOpen(false);
@@ -113,12 +119,22 @@ export default function Navbar() {
 
   return (
     <div className="navbar bg-[#1E3A8A] w-full px-6 py-3 fixed top-0 left-0 right-0 z-50 shadow-md">
-      
       {/* Tombol Hamburger (Mobile) */}
       <div className="flex-none lg:hidden">
-        <label htmlFor="my-drawer-2" aria-label="open sidebar" className="btn btn-square btn-ghost">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block h-6 w-6 stroke-white">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <label
+          htmlFor="my-drawer-2"
+          aria-label="open sidebar"
+          className="btn btn-square btn-ghost">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="inline-block h-6 w-6 stroke-white">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </label>
       </div>
@@ -126,7 +142,13 @@ export default function Navbar() {
       {/* Logo Area */}
       <div className="navbar-start">
         <div className="flex flex-row items-center gap-x-4">
-          <Image src="/unhas-logo.png" alt="Unhas Logo" width={40} height={10} priority />
+          <Image
+            src="/unhas-logo.png"
+            alt="Unhas Logo"
+            width={40}
+            height={10}
+            priority
+          />
           <div className="flex flex-col text-white">
             <span className="font-normal text-sm">Universitas Hasanuddin</span>
             <span className="font-bold text-sm">Department of Informatics</span>
@@ -137,7 +159,6 @@ export default function Navbar() {
       {/* MENU TENGAH */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal text-white font-medium text-xl flex items-center gap-4">
-          
           {/* HOME */}
           <li className="relative group px-2">
             <button
@@ -178,8 +199,8 @@ export default function Navbar() {
           {/* PERBAIKAN: Link disamakan ke /news agar isActive("/news") bekerja */}
           <li className="relative group px-2">
             <button
-              onClick={() => handleNav("/newsandevents")} 
-              className={getItemClass(isActive("/news"))}>
+              onClick={() => handleNav("/newsandevents")}
+              className={getItemClass(isActive("/newsandevents"))}>
               News and Events
             </button>
           </li>
@@ -201,7 +222,6 @@ export default function Navbar() {
               Survey
             </button>
           </li>
-
         </ul>
       </div>
 
@@ -211,7 +231,14 @@ export default function Navbar() {
           <div className="relative group">
             <Link href="/login" aria-label="Login">
               <button className="rounded-lg bg-[#E3E3E3] border border-[#767676] px-3 py-1 text-base text-[#1E1E1E] flex items-center gap-3 transition-transform duration-200 group-hover:scale-105 hover:shadow-md">
-                <Image src="/logo login.png" alt="Login logo" width={28} height={28} className="rounded-full" priority />
+                <Image
+                  src="/logo login.png"
+                  alt="Login logo"
+                  width={28}
+                  height={28}
+                  className="rounded-full"
+                  priority
+                />
                 <span className="font-medium">Login</span>
               </button>
             </Link>
@@ -223,7 +250,9 @@ export default function Navbar() {
             <button
               onClick={() => setMenuOpen((s) => !s)}
               className="flex items-center gap-3 bg-white border rounded-lg px-3 py-1 shadow-sm">
-              <span className="text-sm font-medium text-gray-800">{user.name.split(" ")[0]}</span>
+              <span className="text-sm font-medium text-gray-800">
+                {user.name.split(" ")[0]}
+              </span>
               <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
                 {user.initials}
               </div>
@@ -231,16 +260,22 @@ export default function Navbar() {
 
             {menuOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border">
-                <div className="px-4 py-3 text-xs text-gray-400">Kelola Akun</div>
+                <div className="px-4 py-3 text-xs text-gray-400">
+                  Kelola Akun
+                </div>
                 <ul>
                   <li>
                     {/* PERBAIKAN: Link Profil mengarah ke folder struktur baru */}
-                    <Link href="/homeuser/profile" className="block px-4 py-3 hover:bg-gray-50 text-black">
+                    <Link
+                      href="/homeuser/profile"
+                      className="block px-4 py-3 hover:bg-gray-50 text-black">
                       Profil
                     </Link>
                   </li>
                   <li>
-                    <button onClick={logout} className="w-full text-left px-4 py-3 hover:bg-gray-50 text-black">
+                    <button
+                      onClick={logout}
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 text-black">
                       Keluar
                     </button>
                   </li>

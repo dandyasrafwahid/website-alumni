@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link"; // 1. IMPORT LINK DISINI
+import PasswordToggle from "@/components/PasswordToggle";
 
 export default function Login() {
   const [nim, setNim] = useState("");
@@ -97,13 +98,12 @@ export default function Login() {
               <label className="block text-gray-300 text-sm mb-2">
                 Password
               </label>
-              <input
-                type="password"
+              <PasswordToggle
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
-                className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                required
+                className="focus:ring-blue-500"
+                required={true}
               />
             </div>
 

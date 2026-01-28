@@ -19,8 +19,7 @@ export default function DashboardLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="antialiased bg-gray-50 dark:bg-gray-900">
           <Navbar></Navbar>
           <Sidebar></Sidebar>

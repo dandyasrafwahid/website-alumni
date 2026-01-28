@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 interface JobPosting {
   id: number;
@@ -347,7 +346,6 @@ export default function JobsPage() {
           </div>
         </div>
       </div>
-      <Footer />
 
       {/* --- DETAIL MODAL --- */}
       {selectedJob && (
