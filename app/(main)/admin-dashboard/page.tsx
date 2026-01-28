@@ -187,25 +187,25 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-gray-50 font-sans relative overflow-hidden">
+      {/* Background parallax layer */}
+      <div
+        className="fixed inset-0 opacity-5 -z-10"
+        style={{
+          backgroundImage: "url('/DSC09820.JPG')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform: `translateY(${scrollY * 0.5}px)`,
+        }}>
+      </div>"
       <Navbar />
 
       <main className="relative min-h-screen pt-24 pb-12">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Admin Dashboard
-            </h1>
-            <p className="text-gray-600">
-              Kelola Newsletter dan Berita & Acara untuk Alumni
-            </p>
-            {user && (
-              <p className="text-sm text-gray-500 mt-2">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12"  <p className="text-sm text-gray-500 mt-2">
                 Selamat datang,{" "}
                 <span className="font-semibold">{user.name}</span> (Admin)
               </p>
-            )}
+            
           </div>
 
           {/* Tab Navigation */}

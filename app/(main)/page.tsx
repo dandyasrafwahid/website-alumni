@@ -1,3 +1,5 @@
+"use client";
+
 // Import ikon kustom
 import LihatDaftarAlumniIcon from "@/components/icons/LihatDaftarAlumniIcon";
 import TentangAlumniIcon from "@/components/icons/TentangAlumniIcon";
@@ -8,8 +10,19 @@ import Navbar from "@/components/Navbar";
 // Next.js components
 import Image from "next/image";
 import Link from "next/link"; // Import Link untuk navigasi
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   // Data Mockup Singkat untuk Tampilan Home
   const homeNewsletters = [
     {
@@ -47,12 +60,30 @@ export default function Home() {
         className="drawer-content flex flex-col bg-[#1E3A8A] min-h-screen">
         <Navbar />
 
-        {/* --- HERO SECTION --- */}
-        <div className="pt-20 lg:pt-24">
-          <div className="min-h-[90vh] bg-[#1E3A8A] flex w-full h-full justify-center items-center pb-12">
-            <div className="flex flex-col lg:flex-row px-6 lg:px-16 gap-10 lg:gap-x-32 items-center">
+        {/* --- HERO SECTION dengan PARALLAX --- */}
+        <div className="overflow-hidden relative pt-16 lg:pt-20">
+          <div className="min-h-[90vh] bg-[#1E3A8A] flex w-full h-full justify-center items-center pb-12 relative">
+            {/* Background parallax layer */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: "url('/DSC09820.JPG')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                transform: `translateY(${scrollY * 0.5}px)`,
+              }}></div>
+
+            <div
+              className="flex flex-col lg:flex-row px-6 lg:px-16 gap-10 lg:gap-x-32 items-center relative z-10 pt-12"
+              style={{
+                transform: `translateY(${scrollY * 0.3}px)`,
+              }}>
               {/* Kolom teks kiri */}
-              <div className="flex flex-col flex-1 gap-y-10 lg:gap-y-16 text-center lg:text-left">
+              <div
+                className="flex flex-col flex-1 gap-y-10 lg:gap-y-16 text-center lg:text-left"
+                style={{
+                  transform: `translateY(${scrollY * 0.2}px)`,
+                }}>
                 <span className="font-bold text-4xl lg:text-5xl transition-all duration-300 ease-out text-white">
                   Website Resmi <br /> Alumni Teknik Informatika Universitas
                   Hasanuddin
@@ -79,9 +110,13 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Kolom kanan — statistik */}
-              <div className="flex flex-1 items-center justify-center w-full">
-                <div className="bg-[#354E96] flex flex-col sm:flex-row rounded-2xl p-8 lg:p-16 gap-8 lg:gap-16 hover:scale-105 transition-transform text-center w-full justify-center">
+              {/* Kolom kanan — statistik dengan parallax lebih kuat */}
+              <div
+                className="flex flex-1 items-center justify-center w-full"
+                style={{
+                  transform: `translateY(${scrollY * 0.4}px)`,
+                }}>
+                <div className="bg-[#354E96]/30 flex flex-col sm:flex-row rounded-2xl p-8 lg:p-16 gap-8 lg:gap-16 hover:scale-105 transition-transform text-center w-full justify-center backdrop-blur-sm border border-white/20">
                   <div className="flex flex-col items-center">
                     <span className="text-white font-bold text-3xl">1K+</span>
                     <span className="text-white font-normal text-base">
@@ -107,7 +142,7 @@ export default function Home() {
         </div>
 
         {/* --- AREA KONTEN PUTIH --- */}
-        <div className="w-full bg-white pt-12 pb-12 rounded-t-3xl mt-[-20px] z-10 relative space-y-20">
+        <div className="w-full bg-white pt-20 pb-12 rounded-t-3xl mt-[-40px] z-10 relative space-y-20">
           {/* 1. BAGIAN KARTU INFO (Dana Abadi & Survei) */}
           <div className="max-w-7xl mx-auto px-6 space-y-10">
             {/* Kartu Dana Abadi */}

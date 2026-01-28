@@ -72,7 +72,6 @@ export default function HomeUser() {
             className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-12">
             <div className="bg-white/95 rounded-2xl shadow-xl p-8 border-2 border-yellow-300">
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-3xl">⚙️</span>
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">
                     Admin Dashboard
