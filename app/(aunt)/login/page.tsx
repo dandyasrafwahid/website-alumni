@@ -8,7 +8,7 @@ import Link from "next/link"; // 1. IMPORT LINK DISINI
 import PasswordToggle from "@/components/PasswordToggle";
 
 export default function Login() {
-  const [nim, setNim] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
@@ -26,8 +26,12 @@ export default function Login() {
       // ignore
     }
 
+    // Determine account type based on email
+    const accountType =
+      email.trim().toLowerCase() === "admin@alumni.id" ? "admin" : "user";
+
     // Save user info to localStorage with account type
-    const name = nim.trim() || "Alwan Indrawan Azis";
+    const name = email.trim() || "Alumni User";
     const initials = name
       .split(" ")
       .map((n) => n[0]?.toUpperCase() || "")
@@ -39,19 +43,22 @@ export default function Login() {
         "alumniUser",
         JSON.stringify({
           name: name,
-          nim: nim,
+          email: email,
           initials: initials,
-          // Pertahankan accountType jika sudah ada, default ke 'user'
-          accountType: existingUser.accountType || "user",
-          nip: existingUser.nip || "",
+          accountType: accountType,
+          nip: accountType === "admin" ? existingUser.nip || "" : "",
         }),
       );
     } catch {
       // ignore storage errors
     }
 
-    // Semua user (admin atau biasa) redirect ke homeuser
-    router.push("/homeuser");
+    // Redirect berdasarkan account type
+    if (accountType === "admin") {
+      router.push("/homeuser");
+    } else {
+      router.push("/homeuser");
+    }
   };
 
   return (
@@ -80,17 +87,20 @@ export default function Login() {
 
           {/* Form Login */}
           <form onSubmit={handleLogin} className="space-y-6">
-            {/* NIM Input */}
+            {/* Email Input */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2">NIM</label>
+              <label className="block text-gray-300 text-sm mb-2">Email</label>
               <input
-                type="text"
-                value={nim}
-                onChange={(e) => setNim(e.target.value)}
-                placeholder="Enter NIM"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Masukkan email Anda"
                 className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 required
               />
+              <p className="text-gray-500 text-xs mt-2">
+                Gunakan email admin@alumni.id untuk akses admin
+              </p>
             </div>
 
             {/* Password Input */}

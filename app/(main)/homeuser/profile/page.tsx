@@ -68,11 +68,28 @@ export default function ViewProfilePage() {
   const [isEditingAdmin, setIsEditingAdmin] = useState(false);
   const [adminProfileData, setAdminProfileData] = useState<any>(null);
   const [adminFotoPreview, setAdminFotoPreview] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<"newsletter" | "news">(
-    "newsletter",
+  const [activeTab, setActiveTab] = useState<"profile" | "newsletter" | "news">(
+    "profile",
   );
   const [newsletters, setNewsletters] = useState<NewsletterItem[]>([]);
   const [newsEvents, setNewsEvents] = useState<NewsEventItem[]>([]);
+
+  // Newsletter Form States
+  const [newsletterForm, setNewsletterForm] = useState({
+    title: "",
+    edition: "",
+    image: null as File | null,
+  });
+  const [newsletterPreview, setNewsletterPreview] = useState<string>("");
+
+  // News Form States
+  const [newsForm, setNewsForm] = useState({
+    title: "",
+    content: "",
+    image: null as File | null,
+    date: "",
+  });
+  const [newsPreview, setNewsPreview] = useState<string>("");
 
   useEffect(() => {
     const stored = localStorage.getItem("alumniUser");
@@ -112,6 +129,16 @@ export default function ViewProfilePage() {
         const storedNews = localStorage.getItem("newsEvents");
         if (storedNews) {
           setNewsEvents(JSON.parse(storedNews));
+        }
+
+        // Check hash URL untuk buka tab tertentu
+        const hash = window.location.hash.substring(1);
+        if (hash === "newsletter") {
+          setActiveTab("newsletter");
+        } else if (hash === "news") {
+          setActiveTab("news");
+        } else if (hash === "profile") {
+          setActiveTab("profile");
         }
       }
     }
@@ -225,6 +252,106 @@ export default function ViewProfilePage() {
     setAdminProfileData(updatedProfile);
     setIsEditingAdmin(false);
     alert("Profil berhasil disimpan!");
+  };
+
+  // Newsletter Handlers
+  const handleNewsletterImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setNewsletterForm({ ...newsletterForm, image: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewsletterPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      !newsletterForm.title ||
+      !newsletterForm.edition ||
+      !newsletterForm.image
+    ) {
+      alert("Mohon lengkapi semua field");
+      return;
+    }
+
+    const newNewsletter: NewsletterItem = {
+      id: Date.now(),
+      title: newsletterForm.title,
+      edition: newsletterForm.edition,
+      image: newsletterPreview,
+      uploadDate: new Date().toLocaleDateString("id-ID"),
+    };
+
+    const updatedNewsletters = [...newsletters, newNewsletter];
+    setNewsletters(updatedNewsletters);
+    localStorage.setItem("newsletters", JSON.stringify(updatedNewsletters));
+
+    setNewsletterForm({ title: "", edition: "", image: null });
+    setNewsletterPreview("");
+    alert("Newsletter berhasil diunggah!");
+  };
+
+  const deleteNewsletter = (id: number) => {
+    if (!confirm("Yakin ingin menghapus newsletter ini?")) return;
+    const updatedNewsletters = newsletters.filter((n) => n.id !== id);
+    setNewsletters(updatedNewsletters);
+    localStorage.setItem("newsletters", JSON.stringify(updatedNewsletters));
+  };
+
+  // News & Events Handlers
+  const handleNewsImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setNewsForm({ ...newsForm, image: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewsPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNewsSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      !newsForm.title ||
+      !newsForm.content ||
+      !newsForm.image ||
+      !newsForm.date
+    ) {
+      alert("Mohon lengkapi semua field");
+      return;
+    }
+
+    const newNewsEvent: NewsEventItem = {
+      id: Date.now(),
+      title: newsForm.title,
+      content: newsForm.content,
+      image: newsPreview,
+      date: newsForm.date,
+      uploadDate: new Date().toLocaleDateString("id-ID"),
+    };
+
+    const updatedNewsEvents = [...newsEvents, newNewsEvent];
+    setNewsEvents(updatedNewsEvents);
+    localStorage.setItem("newsEvents", JSON.stringify(updatedNewsEvents));
+
+    setNewsForm({ title: "", content: "", image: null, date: "" });
+    setNewsPreview("");
+    alert("Berita berhasil diunggah!");
+  };
+
+  const deleteNewsEvent = (id: number) => {
+    if (!confirm("Yakin ingin menghapus berita ini?")) return;
+    const updatedNewsEvents = newsEvents.filter((n) => n.id !== id);
+    setNewsEvents(updatedNewsEvents);
+    localStorage.setItem("newsEvents", JSON.stringify(updatedNewsEvents));
   };
 
   // Tampilan Loading
@@ -473,40 +600,327 @@ export default function ViewProfilePage() {
                     </div>
                   </div>
 
-                  {/* Content Management */}
+                  {/* Content Management dengan Tabs */}
                   <div>
                     <h3 className="text-xl font-bold text-gray-900 mb-4">
                       Kelola Konten
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200 transition">
-                        <h4 className="font-semibold text-blue-900 mb-1">
-                          Newsletter ({newsletters.length})
-                        </h4>
-                        <p className="text-sm text-blue-700 mb-3">
-                          Upload dan kelola newsletter edisi terbaru
-                        </p>
-                        <a
-                          href="/homeuser#newsletter"
-                          className="text-blue-600 hover:text-blue-800 text-sm font-semibold">
-                          Kelola Newsletter →
-                        </a>
-                      </div>
 
-                      <div className="p-4 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 transition">
-                        <h4 className="font-semibold text-purple-900 mb-1">
-                          Berita & Acara ({newsEvents.length})
-                        </h4>
-                        <p className="text-sm text-purple-700 mb-3">
-                          Upload dan kelola berita serta acara departemen
-                        </p>
-                        <a
-                          href="/homeuser#news"
-                          className="text-purple-600 hover:text-purple-800 text-sm font-semibold">
-                          Kelola Berita →
-                        </a>
-                      </div>
+                    {/* Tabs */}
+                    <div className="flex gap-1 mb-6 border-b border-gray-200">
+                      <button
+                        onClick={() => setActiveTab("profile")}
+                        className={`pb-3 px-6 font-medium transition-all ${
+                          activeTab === "profile"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}>
+                        Data Profil
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("newsletter")}
+                        className={`pb-3 px-6 font-medium transition-all ${
+                          activeTab === "newsletter"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}>
+                        Newsletter ({newsletters.length})
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("news")}
+                        className={`pb-3 px-6 font-medium transition-all ${
+                          activeTab === "news"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}>
+                        Berita & Acara ({newsEvents.length})
+                      </button>
                     </div>
+
+                    {/* Tab: Profile Summary */}
+                    {activeTab === "profile" && (
+                      <div className="text-sm text-gray-600">
+                        <p className="mb-2">
+                          Klik <strong>Edit Profil</strong> di atas untuk
+                          mengubah data profil admin.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Tab: Newsletter Management */}
+                    {activeTab === "newsletter" && (
+                      <div className="space-y-6">
+                        {/* Upload Form */}
+                        <form
+                          onSubmit={handleNewsletterSubmit}
+                          className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                          <h4 className="font-semibold text-gray-900 mb-4">
+                            Upload Newsletter Baru
+                          </h4>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Judul Newsletter
+                              </label>
+                              <input
+                                type="text"
+                                value={newsletterForm.title}
+                                onChange={(e) =>
+                                  setNewsletterForm({
+                                    ...newsletterForm,
+                                    title: e.target.value,
+                                  })
+                                }
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Contoh: Newsletter Edisi Januari"
+                                required
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Edisi
+                              </label>
+                              <input
+                                type="text"
+                                value={newsletterForm.edition}
+                                onChange={(e) =>
+                                  setNewsletterForm({
+                                    ...newsletterForm,
+                                    edition: e.target.value,
+                                  })
+                                }
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Contoh: Januari 2026"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Gambar Newsletter
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleNewsletterImageChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg file:bg-blue-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded file:cursor-pointer hover:file:bg-blue-700"
+                              required
+                            />
+                            {newsletterPreview && (
+                              <div className="mt-3 relative w-32 h-32 rounded-lg overflow-hidden">
+                                <Image
+                                  src={newsletterPreview}
+                                  alt="Preview"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          <button
+                            type="submit"
+                            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition">
+                            Upload Newsletter
+                          </button>
+                        </form>
+
+                        {/* Newsletter List */}
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-3">
+                            Daftar Newsletter ({newsletters.length})
+                          </h4>
+                          {newsletters.length === 0 ? (
+                            <p className="text-gray-500 text-center py-6">
+                              Belum ada newsletter yang diunggah
+                            </p>
+                          ) : (
+                            <div className="space-y-3">
+                              {newsletters.map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
+                                  <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
+                                    <Image
+                                      src={item.image}
+                                      alt={item.title}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                  <div className="flex-grow">
+                                    <h5 className="font-bold text-gray-900">
+                                      {item.title}
+                                    </h5>
+                                    <p className="text-sm text-gray-600">
+                                      Edisi: {item.edition}
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                      Upload: {item.uploadDate}
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => deleteNewsletter(item.id)}
+                                    className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition self-start">
+                                    Hapus
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Tab: News & Events Management */}
+                    {activeTab === "news" && (
+                      <div className="space-y-6">
+                        {/* Upload Form */}
+                        <form
+                          onSubmit={handleNewsSubmit}
+                          className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                          <h4 className="font-semibold text-gray-900 mb-4">
+                            Upload Berita / Acara Baru
+                          </h4>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Judul Berita / Acara
+                              </label>
+                              <input
+                                type="text"
+                                value={newsForm.title}
+                                onChange={(e) =>
+                                  setNewsForm({
+                                    ...newsForm,
+                                    title: e.target.value,
+                                  })
+                                }
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Contoh: Seminar Teknologi AI"
+                                required
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Tanggal Acara
+                              </label>
+                              <input
+                                type="date"
+                                value={newsForm.date}
+                                onChange={(e) =>
+                                  setNewsForm({
+                                    ...newsForm,
+                                    date: e.target.value,
+                                  })
+                                }
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Deskripsi / Konten
+                            </label>
+                            <textarea
+                              value={newsForm.content}
+                              onChange={(e) =>
+                                setNewsForm({
+                                  ...newsForm,
+                                  content: e.target.value,
+                                })
+                              }
+                              rows={4}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              placeholder="Jelaskan detail berita atau acara..."
+                              required
+                            />
+                          </div>
+
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Gambar Berita / Acara
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleNewsImageChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg file:bg-purple-600 file:text-white file:border-0 file:px-4 file:py-2 file:rounded file:cursor-pointer hover:file:bg-purple-700"
+                              required
+                            />
+                            {newsPreview && (
+                              <div className="mt-3 relative w-32 h-32 rounded-lg overflow-hidden">
+                                <Image
+                                  src={newsPreview}
+                                  alt="Preview"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          <button
+                            type="submit"
+                            className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition">
+                            Upload Berita / Acara
+                          </button>
+                        </form>
+
+                        {/* News List */}
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-3">
+                            Daftar Berita & Acara ({newsEvents.length})
+                          </h4>
+                          {newsEvents.length === 0 ? (
+                            <p className="text-gray-500 text-center py-6">
+                              Belum ada berita atau acara yang diunggah
+                            </p>
+                          ) : (
+                            <div className="space-y-3">
+                              {newsEvents.map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
+                                  <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
+                                    <Image
+                                      src={item.image}
+                                      alt={item.title}
+                                      fill
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                  <div className="flex-grow">
+                                    <h5 className="font-bold text-gray-900">
+                                      {item.title}
+                                    </h5>
+                                    <p className="text-sm text-gray-600 line-clamp-2">
+                                      {item.content}
+                                    </p>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                      Tanggal: {item.date} | Upload:{" "}
+                                      {item.uploadDate}
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => deleteNewsEvent(item.id)}
+                                    className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition self-start">
+                                    Hapus
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

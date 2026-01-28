@@ -19,11 +19,8 @@ export default function Register() {
     email: "",
     status: "",
     password: "",
-    accountType: "user", // 'user' atau 'admin'
-    nip: "", // Khusus admin
+    accountType: "user",
   });
-
-  const [nipError, setNipError] = useState("");
 
   // Handler untuk perubahan input
   const handleChange = (
@@ -36,38 +33,20 @@ export default function Register() {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validasi NIM untuk user biasa
-    if (formData.accountType === "user") {
-      if (!formData.nim.trim()) {
-        alert("NIM harus diisi untuk user biasa");
-        return;
-      }
+    if (!formData.nim.trim()) {
+      alert("NIM harus diisi");
+      return;
     }
 
-    // Validasi NIP untuk admin
-    if (formData.accountType === "admin") {
-      if (!formData.nip.trim()) {
-        setNipError("NIP harus diisi untuk akun Admin");
-        return;
-      }
-      if (!/^\d{18}$/.test(formData.nip.trim())) {
-        setNipError("NIP harus 18 digit angka");
-        return;
-      }
-    }
-
-    setNipError("");
     console.log("Data Registrasi Dikirim:", formData);
 
-    // Simpan ke localStorage dengan accountType
     localStorage.setItem(
       "alumniUser",
       JSON.stringify({
         name: formData.nama,
-        nim: formData.accountType === "user" ? formData.nim : "",
+        nim: formData.nim,
         email: formData.email,
-        accountType: formData.accountType,
-        nip: formData.accountType === "admin" ? formData.nip : "",
+        accountType: "user",
         initials: formData.nama
           .split(" ")
           .map((n) => n[0]?.toUpperCase() || "")
@@ -124,39 +103,22 @@ export default function Register() {
               />
             </div>
 
-            {/* NIM & No HP Grid - NIM hanya untuk user biasa */}
-            {formData.accountType === "user" ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-gray-300 text-sm mb-2 font-medium">
-                    NIM
-                  </label>
-                  <input
-                    type="text"
-                    name="nim"
-                    value={formData.nim}
-                    onChange={handleChange}
-                    placeholder="Contoh: D121..."
-                    className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-300 text-sm mb-2 font-medium">
-                    No HP / WA
-                  </label>
-                  <input
-                    type="tel"
-                    name="noHp"
-                    value={formData.noHp}
-                    onChange={handleChange}
-                    placeholder="08xxxxxxxxxx"
-                    className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
-                    required
-                  />
-                </div>
+            {/* NIM & No HP Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-gray-300 text-sm mb-2 font-medium">
+                  NIM
+                </label>
+                <input
+                  type="text"
+                  name="nim"
+                  value={formData.nim}
+                  onChange={handleChange}
+                  placeholder="Contoh: D121..."
+                  className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
+                  required
+                />
               </div>
-            ) : (
               <div>
                 <label className="block text-gray-300 text-sm mb-2 font-medium">
                   No HP / WA
@@ -171,7 +133,7 @@ export default function Register() {
                   required
                 />
               </div>
-            )}
+            </div>
 
             {/* Email Input */}
             <div>
@@ -221,74 +183,6 @@ export default function Register() {
                 </div>
               </div>
             </div>
-
-            {/* Account Type Selection */}
-            <div>
-              <label className="block text-gray-300 text-sm mb-3 font-medium">
-                Tipe Akun
-              </label>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="accountUser"
-                    name="accountType"
-                    value="user"
-                    checked={formData.accountType === "user"}
-                    onChange={handleChange}
-                    className="w-4 h-4 text-red-500 bg-white border-gray-300 cursor-pointer"
-                  />
-                  <label
-                    htmlFor="accountUser"
-                    className="ml-3 text-gray-300 text-sm font-medium cursor-pointer">
-                    User Biasa (Alumni)
-                  </label>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="radio"
-                    id="accountAdmin"
-                    name="accountType"
-                    value="admin"
-                    checked={formData.accountType === "admin"}
-                    onChange={handleChange}
-                    className="w-4 h-4 text-red-500 bg-white border-gray-300 cursor-pointer"
-                  />
-                  <label
-                    htmlFor="accountAdmin"
-                    className="ml-3 text-gray-300 text-sm font-medium cursor-pointer">
-                    Admin (Staff Departemen)
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* NIP Input - Hanya tampil jika Admin */}
-            {formData.accountType === "admin" && (
-              <div>
-                <label className="block text-gray-300 text-sm mb-2 font-medium">
-                  NIP (Nomor Induk Pegawai) *
-                </label>
-                <input
-                  type="text"
-                  name="nip"
-                  value={formData.nip}
-                  onChange={handleChange}
-                  placeholder="Contoh: 197001011994031001 (18 digit)"
-                  className={`w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 transition shadow-sm ${
-                    nipError
-                      ? "focus:ring-red-500 border-2 border-red-500"
-                      : "focus:ring-red-500"
-                  }`}
-                />
-                {nipError && (
-                  <p className="text-red-400 text-xs mt-1">{nipError}</p>
-                )}
-                <p className="text-gray-400 text-xs mt-1">
-                  NIP harus 18 digit angka untuk verifikasi staff
-                </p>
-              </div>
-            )}
 
             {/* Password Input */}
             <div>

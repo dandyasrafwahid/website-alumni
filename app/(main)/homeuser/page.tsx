@@ -70,37 +70,33 @@ export default function HomeUser() {
           <div
             id="admin-section"
             className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-12">
-            <div className="bg-white/95 rounded-2xl shadow-xl p-8 border-2 border-yellow-300">
-              <div className="flex items-center gap-3 mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Admin Dashboard
-                  </h2>
-                  <p className="text-gray-600 text-sm">
-                    Kelola konten newsletter dan berita departemen
-                  </p>
-                </div>
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Admin Dashboard
+                </h2>
+                <p className="text-gray-600 text-sm mt-1">
+                  Kelola konten newsletter dan berita departemen
+                </p>
               </div>
 
               {/* Admin Tabs */}
-              <div className="flex gap-4 mb-6 border-b border-gray-200">
+              <div className="flex gap-1 mb-6 border-b border-gray-200">
                 <button
                   onClick={() => setActiveAdminTab("newsletter")}
-                  id="newsletter"
-                  className={`pb-4 px-4 font-semibold transition-colors ${
+                  className={`pb-3 px-6 font-medium transition-all ${
                     activeAdminTab === "newsletter"
                       ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      : "text-gray-500 hover:text-gray-700"
                   }`}>
                   Newsletter ({newsletters.length})
                 </button>
                 <button
                   onClick={() => setActiveAdminTab("news")}
-                  id="news"
-                  className={`pb-4 px-4 font-semibold transition-colors ${
+                  className={`pb-3 px-6 font-medium transition-all ${
                     activeAdminTab === "news"
                       ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-gray-900"
+                      : "text-gray-500 hover:text-gray-700"
                   }`}>
                   Berita & Acara ({newsEvents.length})
                 </button>
@@ -110,15 +106,15 @@ export default function HomeUser() {
               {activeAdminTab === "newsletter" && (
                 <div className="space-y-4">
                   {newsletters.length === 0 ? (
-                    <p className="text-center text-gray-500 py-6">
+                    <p className="text-center text-gray-500 py-8">
                       Belum ada newsletter
                     </p>
                   ) : (
                     newsletters.map((item) => (
                       <div
                         key={item.id}
-                        className="flex gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-300 transition">
-                        <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden">
+                        className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
+                        <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
                           <Image
                             src={item.image}
                             alt={item.title}
@@ -127,14 +123,14 @@ export default function HomeUser() {
                           />
                         </div>
                         <div className="flex-grow">
-                          <h4 className="font-bold text-gray-900">
+                          <h4 className="font-bold text-gray-900 text-lg mb-1">
                             {item.title}
                           </h4>
                           <p className="text-sm text-gray-600">
                             Edisi: {item.edition}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            Upload: {item.uploadDate}
+                          <p className="text-sm text-gray-500">
+                            Upload: {item.uploadDate ? item.uploadDate : ""}
                           </p>
                         </div>
                       </div>
@@ -142,7 +138,7 @@ export default function HomeUser() {
                   )}
                   <Link
                     href="/homeuser/profile"
-                    className="inline-block mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition">
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
                     Kelola Newsletter Lengkap →
                   </Link>
                 </div>
@@ -151,15 +147,15 @@ export default function HomeUser() {
               {activeAdminTab === "news" && (
                 <div className="space-y-4">
                   {newsEvents.length === 0 ? (
-                    <p className="text-center text-gray-500 py-6">
+                    <p className="text-center text-gray-500 py-8">
                       Belum ada berita
                     </p>
                   ) : (
-                    newsEvents.slice(0, 3).map((item) => (
+                    newsEvents.map((item) => (
                       <div
                         key={item.id}
-                        className="flex gap-4 p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-blue-300 transition">
-                        <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden">
+                        className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
+                        <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
                           <Image
                             src={item.image}
                             alt={item.title}
@@ -168,14 +164,14 @@ export default function HomeUser() {
                           />
                         </div>
                         <div className="flex-grow">
-                          <h4 className="font-bold text-gray-900">
+                          <h4 className="font-bold text-gray-900 text-lg mb-1">
                             {item.title}
                           </h4>
-                          <p className="text-xs text-gray-600 line-clamp-1">
+                          <p className="text-sm text-gray-600 line-clamp-2">
                             {item.content}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Upload: {item.uploadDate}
+                          <p className="text-sm text-gray-500 mt-1">
+                            Upload: {item.uploadDate ? item.uploadDate : ""}
                           </p>
                         </div>
                       </div>
@@ -183,7 +179,7 @@ export default function HomeUser() {
                   )}
                   <Link
                     href="/homeuser/profile"
-                    className="inline-block mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-sm transition">
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
                     Kelola Berita Lengkap →
                   </Link>
                 </div>
