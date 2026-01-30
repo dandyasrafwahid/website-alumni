@@ -67,7 +67,7 @@ export default function Home() {
             <div
               className="absolute inset-0 opacity-10"
               style={{
-                backgroundImage: "url('/DSC09820.JPG')",
+                backgroundImage: "url('/halaman.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 transform: `translateY(${scrollY * 0.5}px)`,

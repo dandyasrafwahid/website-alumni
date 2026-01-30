@@ -13,6 +13,7 @@ export default function HomeUser() {
   const [activeAdminTab, setActiveAdminTab] = useState<"newsletter" | "news">(
     "newsletter",
   );
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   // --- AMBIL DATA USER DARI LOCALSTORAGE ---
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function HomeUser() {
         {/* --- BACKGROUND IMAGE & OVERLAY --- */}
         <div className="absolute inset-0 h-full w-full">
           <Image
-            src="/DSC09820.JPG" // Pastikan gambar ini ada di folder public
+            src="/halaman.png" // Pastikan gambar ini ada di folder public
             alt="bg"
             fill
             className="object-cover"
@@ -67,125 +68,305 @@ export default function HomeUser() {
 
         {/* --- ADMIN MANAGEMENT SECTION (Hanya untuk admin) --- */}
         {user?.accountType === "admin" && (
-          <div
-            id="admin-section"
-            className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-12">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  Admin Dashboard
-                </h2>
-                <p className="text-gray-600 text-sm mt-1">
-                  Kelola konten newsletter dan berita departemen
-                </p>
-              </div>
+          <>
+            {/* Floating Admin Button */}
+            <button
+              onClick={() => setShowAdminModal(true)}
+              className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group"
+              title="Admin Dashboard">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {newsletters.length + newsEvents.length}
+              </span>
+            </button>
 
-              {/* Admin Tabs */}
-              <div className="flex gap-1 mb-6 border-b border-gray-200">
-                <button
-                  onClick={() => setActiveAdminTab("newsletter")}
-                  className={`pb-3 px-6 font-medium transition-all ${
-                    activeAdminTab === "newsletter"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}>
-                  Newsletter ({newsletters.length})
-                </button>
-                <button
-                  onClick={() => setActiveAdminTab("news")}
-                  className={`pb-3 px-6 font-medium transition-all ${
-                    activeAdminTab === "news"
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}>
-                  Berita & Acara ({newsEvents.length})
-                </button>
-              </div>
+            {/* Admin Modal */}
+            {showAdminModal && (
+              <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                {/* Backdrop */}
+                <div
+                  className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+                  onClick={() => setShowAdminModal(false)}></div>
 
-              {/* Tab Content */}
-              {activeAdminTab === "newsletter" && (
-                <div className="space-y-4">
-                  {newsletters.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">
-                      Belum ada newsletter
-                    </p>
-                  ) : (
-                    newsletters.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
-                        <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            fill
-                            className="object-cover"
+                {/* Modal Box */}
+                <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] overflow-hidden animate-fadeIn">
+                  {/* Header */}
+                  <div className="sticky top-0 z-10 bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-white/20 p-2 rounded-lg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                           />
-                        </div>
-                        <div className="flex-grow">
-                          <h4 className="font-bold text-gray-900 text-lg mb-1">
-                            {item.title}
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            Edisi: {item.edition}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            Upload: {item.uploadDate ? item.uploadDate : ""}
-                          </p>
-                        </div>
+                        </svg>
                       </div>
-                    ))
-                  )}
-                  <Link
-                    href="/homeuser/profile"
-                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
-                    Kelola Newsletter Lengkap →
-                  </Link>
-                </div>
-              )}
+                      <div>
+                        <h2 className="text-xl font-bold text-white">
+                          Admin Dashboard
+                        </h2>
+                        <p className="text-white/80 text-sm">
+                          Kelola konten newsletter dan berita
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowAdminModal(false)}
+                      className="text-white/80 hover:text-white hover:bg-white/20 p-2 rounded-lg transition-colors">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
 
-              {activeAdminTab === "news" && (
-                <div className="space-y-4">
-                  {newsEvents.length === 0 ? (
-                    <p className="text-center text-gray-500 py-8">
-                      Belum ada berita
-                    </p>
-                  ) : (
-                    newsEvents.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex gap-4 p-4 bg-white rounded-lg border border-gray-200">
-                        <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-gray-100">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            fill
-                            className="object-cover"
-                          />
+                  {/* Tabs */}
+                  <div className="border-b border-gray-200 bg-gray-50 px-6">
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => setActiveAdminTab("newsletter")}
+                        className={`pb-3 pt-4 px-6 font-semibold transition-all relative ${
+                          activeAdminTab === "newsletter"
+                            ? "text-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}>
+                        <div className="flex items-center gap-2">
+                          <span>Newsletter</span>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full ${
+                              activeAdminTab === "newsletter"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-gray-200 text-gray-600"
+                            }`}>
+                            {newsletters.length}
+                          </span>
                         </div>
-                        <div className="flex-grow">
-                          <h4 className="font-bold text-gray-900 text-lg mb-1">
-                            {item.title}
-                          </h4>
-                          <p className="text-sm text-gray-600 line-clamp-2">
-                            {item.content}
-                          </p>
-                          <p className="text-sm text-gray-500 mt-1">
-                            Upload: {item.uploadDate ? item.uploadDate : ""}
-                          </p>
+                        {activeAdminTab === "newsletter" && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => setActiveAdminTab("news")}
+                        className={`pb-3 pt-4 px-6 font-semibold transition-all relative ${
+                          activeAdminTab === "news"
+                            ? "text-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}>
+                        <div className="flex items-center gap-2">
+                          <span>Berita & Acara</span>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full ${
+                              activeAdminTab === "news"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-gray-200 text-gray-600"
+                            }`}>
+                            {newsEvents.length}
+                          </span>
                         </div>
+                        {activeAdminTab === "news" && (
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"></div>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="overflow-y-auto max-h-[calc(85vh-180px)] p-6">
+                    {/* Tab Content */}
+                    {activeAdminTab === "newsletter" && (
+                      <div className="space-y-3">
+                        {newsletters.length === 0 ? (
+                          <div className="text-center py-12">
+                            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-10 w-10 text-gray-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-gray-500 font-medium">
+                              Belum ada newsletter
+                            </p>
+                            <p className="text-gray-400 text-sm mt-1">
+                              Tambahkan newsletter pertama Anda
+                            </p>
+                          </div>
+                        ) : (
+                          newsletters.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex gap-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-xl border border-blue-200 transition-all hover:shadow-md">
+                              <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-white shadow-sm">
+                                <Image
+                                  src={item.image}
+                                  alt={item.title}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-grow">
+                                <h4 className="font-bold text-gray-900 text-lg mb-1 line-clamp-1">
+                                  {item.title}
+                                </h4>
+                                <p className="text-sm text-gray-600 flex items-center gap-2">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                                    />
+                                  </svg>
+                                  Edisi: {item.edition}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Upload: {item.uploadDate || "N/A"}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    ))
-                  )}
-                  <Link
-                    href="/homeuser/profile"
-                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors">
-                    Kelola Berita Lengkap →
-                  </Link>
+                    )}
+
+                    {activeAdminTab === "news" && (
+                      <div className="space-y-3">
+                        {newsEvents.length === 0 ? (
+                          <div className="text-center py-12">
+                            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-10 w-10 text-gray-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                                />
+                              </svg>
+                            </div>
+                            <p className="text-gray-500 font-medium">
+                              Belum ada berita
+                            </p>
+                            <p className="text-gray-400 text-sm mt-1">
+                              Tambahkan berita pertama Anda
+                            </p>
+                          </div>
+                        ) : (
+                          newsEvents.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex gap-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-xl border border-purple-200 transition-all hover:shadow-md">
+                              <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-white shadow-sm">
+                                <Image
+                                  src={item.image}
+                                  alt={item.title}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <div className="flex-grow">
+                                <h4 className="font-bold text-gray-900 text-lg mb-1 line-clamp-1">
+                                  {item.title}
+                                </h4>
+                                <p className="text-sm text-gray-600 line-clamp-2">
+                                  {item.content}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  Upload: {item.uploadDate || "N/A"}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-between items-center">
+                    <p className="text-sm text-gray-600">
+                      Total konten:{" "}
+                      <span className="font-bold text-gray-900">
+                        {activeAdminTab === "newsletter"
+                          ? newsletters.length
+                          : newsEvents.length}
+                      </span>
+                    </p>
+                    <Link
+                      href="/homeuser/profile"
+                      onClick={() => setShowAdminModal(false)}
+                      className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg font-semibold transition-all shadow-md hover:shadow-lg">
+                      Kelola Lengkap
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 7l5 5m0 0l-5 5m5-5H6"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            )}
+          </>
         )}
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">

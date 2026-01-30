@@ -138,7 +138,7 @@ export default function JobsPage() {
             {/* Background Image Overlay */}
             <div className="absolute inset-0 opacity-20 pointer-events-none">
               <Image
-                src="/DSC09820.JPG"
+                src="/halaman.png"
                 alt="bg-texture"
                 fill
                 className="object-cover grayscale"

@@ -101,11 +101,11 @@ export default function AboutUs() {
               <div className="space-y-2 text-gray-700">
                 <p className="flex items-center gap-2">
                   <span className="text-blue-500 font-medium">✓</span>
-                  (+62)81253584528
+                  (+62)852-4060-9843
                 </p>
                 <p className="flex items-center gap-2">
                   <span className="text-blue-500 font-medium">✓</span>
-                  (+62)81243278997
+                  (+62)813-4240-5416
                 </p>
                 <p className="flex items-center gap-2">
                   <span className="text-blue-500 font-medium">✓</span>

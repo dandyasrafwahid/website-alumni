@@ -185,7 +185,7 @@ export default function NewsEventsPage() {
         {/* Overlay Gambar Background (Opsional) */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <Image
-            src="/DSC09820.JPG"
+            src="/halaman.png"
             alt="bg-texture"
             fill
             className="object-cover grayscale"
