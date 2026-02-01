@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +22,10 @@ export default function AlumniPage() {
   const [filterPerusahaan, setFilterPerusahaan] = useState<string>("all");
   const [selectedAlumni, setSelectedAlumni] = useState<Alumni | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(
+    new Set(),
+  );
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Ambil list angkatan unik
   const tahunAngkatanList = useMemo(() => {
@@ -54,8 +58,104 @@ export default function AlumniPage() {
     });
   }, [searchTerm, filterAngkatan, filterPerusahaan]);
 
+  // --- FADE-IN/REVEAL EFFECT DENGAN INTERSECTION OBSERVER ---
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const observeElement = (id: string, ref: React.RefObject<HTMLElement>) => {
+    if (ref.current && observerRef.current) {
+      ref.current.id = id;
+      observerRef.current.observe(ref.current);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .fade-in {
+          animation: fadeInUp 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-scale {
+          animation: fadeInScale 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animation-delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
       <Navbar />
 
       {/* --- HERO SECTION --- */}
@@ -71,14 +171,25 @@ export default function AlumniPage() {
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center lg:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1
+            className={`text-4xl md:text-5xl font-bold text-white mb-4 fade-in-left ${visibleElements.has("hero-title") ? "fade-in-left" : ""}`}>
             Direktori Alumni
           </h1>
-          <p className="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed">
+          <p
+            className={`text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed fade-in-left animation-delay-200 ${visibleElements.has("hero-title") ? "fade-in-left" : ""}`}>
             Terhubung dengan lebih dari {alumniData.length} alumni Informatika
             Hasanuddin yang telah berkarya di berbagai bidang.
           </p>
         </div>
+        <div
+          ref={(el) => {
+            if (el) {
+              el.id = "hero-title";
+              observeElement("hero-title", { current: el as HTMLElement });
+            }
+          }}
+          className="absolute"
+        />
 
         {/* Wave SVG Divider at Bottom */}
         <div className="absolute bottom-0 left-0 w-full leading-none">
@@ -107,7 +218,14 @@ export default function AlumniPage() {
           </div>
 
           {/* Search & Filter Section */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div
+            className={`bg-white rounded-lg shadow-md p-6 mb-8 fade-in ${visibleElements.has("search-filter") ? "fade-in" : ""}`}
+            ref={(el) => {
+              if (el) {
+                el.id = "search-filter";
+                observeElement("search-filter", { current: el as HTMLElement });
+              }
+            }}>
             {/* Search Bar */}
             <div className="mb-6">
               <div className="relative">
@@ -179,14 +297,23 @@ export default function AlumniPage() {
           {/* Alumni Grid */}
           {filteredAlumni.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredAlumni.map((alumni) => (
+              {filteredAlumni.map((alumni, index) => (
                 <div
                   key={alumni.id}
                   onClick={() => {
                     setSelectedAlumni(alumni);
                     setShowDetailModal(true);
                   }}
-                  className="cursor-pointer">
+                  className={`cursor-pointer fade-in-scale ${visibleElements.has(`alumni-${alumni.id}`) ? "fade-in-scale" : ""}`}
+                  style={{ animationDelay: `${(index % 3) * 100}ms` }}
+                  ref={(el) => {
+                    if (el) {
+                      el.id = `alumni-${alumni.id}`;
+                      observeElement(`alumni-${alumni.id}`, {
+                        current: el as HTMLElement,
+                      });
+                    }
+                  }}>
                   <AlumniCard {...alumni} />
                 </div>
               ))}

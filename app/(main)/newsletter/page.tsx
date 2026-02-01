@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Plus, X, Save, FileText } from "lucide-react";
 
 // Mock Data untuk Newsletter
@@ -81,6 +81,10 @@ export default function Newsletter() {
   const [showModal, setShowModal] = useState(false);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(
+    new Set(),
+  );
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     edition: "",
@@ -112,6 +116,33 @@ export default function Newsletter() {
       setNewsletter(NEWSLETTER_DATA);
     }
   }, []);
+
+  // --- FADE-IN/REVEAL EFFECT DENGAN INTERSECTION OBSERVER ---
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const observeElement = (id: string, ref: React.RefObject<HTMLElement>) => {
+    if (ref.current && observerRef.current) {
+      ref.current.id = id;
+      observerRef.current.observe(ref.current);
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -207,6 +238,75 @@ export default function Newsletter() {
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .fade-in {
+          animation: fadeInUp 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-scale {
+          animation: fadeInScale 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animation-delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
       <Navbar />
 
       {/* --- HERO SECTION --- */}
@@ -222,14 +322,24 @@ export default function Newsletter() {
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center lg:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1
+            className={`text-4xl md:text-5xl font-bold text-white mb-4 fade-in-left ${visibleElements.has("hero-title") ? "fade-in-left" : ""}`}>
             Newsletter
           </h1>
-          <p className="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed">
+          <p
+            className={`text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed fade-in-left animation-delay-200 ${visibleElements.has("hero-title") ? "fade-in-left" : ""}`}>
             Jelajahi E-Bulletin dan temukan kisah-kisah menarik dari para alumni
             inspiratif yang memperkaya perjalanan hidupmu.
           </p>
         </div>
+        <div
+          ref={(el) => {
+            if (el) {
+              el.id = "hero-title";
+              observeElement("hero-title", { current: el as HTMLElement });
+            }
+          }}
+        />
 
         {/* Wave SVG Divider at Bottom */}
         <div className="absolute bottom-0 left-0 w-full leading-none">
@@ -402,7 +512,14 @@ export default function Newsletter() {
         )}
 
         {/* Search Bar */}
-        <div className="max-w-3xl mx-auto mb-16 relative">
+        <div
+          className="max-w-3xl mx-auto mb-16 relative fade-in"
+          ref={(el) => {
+            if (el) {
+              el.id = "search-bar";
+              observeElement("search-bar", { current: el as HTMLElement });
+            }
+          }}>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg
@@ -438,10 +555,19 @@ export default function Newsletter() {
                 item.edition.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 item.desc.toLowerCase().includes(searchTerm.toLowerCase()),
             )
-            .map((item) => (
+            .map((item, index) => (
               <div
                 key={item.id}
-                className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-[450px]">
+                className={`group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 h-[450px] fade-in-scale ${visibleElements.has(`newsletter-${item.id}`) ? "fade-in-scale" : ""}`}
+                style={{ animationDelay: `${(index % 4) * 100}ms` }}
+                ref={(el) => {
+                  if (el) {
+                    el.id = `newsletter-${item.id}`;
+                    observeElement(`newsletter-${item.id}`, {
+                      current: el as HTMLElement,
+                    });
+                  }
+                }}>
                 {/* Image Cover */}
                 <div className="absolute inset-0">
                   <Image

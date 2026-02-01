@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
+import AboutUs from "@/components/about";
 
 export default function HomeUser() {
   const [user, setUser] = useState<any>(null);
@@ -14,6 +15,10 @@ export default function HomeUser() {
     "newsletter",
   );
   const [showAdminModal, setShowAdminModal] = useState(false);
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(
+    new Set(),
+  );
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // --- AMBIL DATA USER DARI LOCALSTORAGE ---
   useEffect(() => {
@@ -38,6 +43,33 @@ export default function HomeUser() {
     setLoading(false);
   }, []);
 
+  // --- FADE-IN/REVEAL EFFECT DENGAN INTERSECTION OBSERVER ---
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const observeElement = (id: string, ref: React.RefObject<HTMLElement>) => {
+    if (ref.current && observerRef.current) {
+      ref.current.id = id;
+      observerRef.current.observe(ref.current);
+    }
+  };
+
   // Tampilan Loading Sederhana
   if (loading) {
     return (
@@ -51,6 +83,91 @@ export default function HomeUser() {
 
   return (
     <div className="min-h-screen bg-white font-sans">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .fade-in {
+          animation: fadeInUp 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-scale {
+          animation: fadeInScale 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-right {
+          animation: fadeInRight 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animation-delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
       <Navbar />
 
       <main className="relative min-h-screen">
@@ -372,13 +489,28 @@ export default function HomeUser() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-12">
             {/* --- BAGIAN KIRI: TEKS SAMBUTAN --- */}
-            <section className="text-white pt-4 lg:pt-12">
-              <p className="text-lg text-blue-200 font-medium mb-2">
+            <section
+              className={`text-white pt-4 lg:pt-12 fade-in-left ${
+                visibleElements.has("text-section") ? "" : ""
+              }`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "text-section";
+                  observeElement("text-section", { current: el });
+                }
+              }}>
+              <p
+                className={`text-lg text-blue-200 font-medium mb-2 fade-in animation-delay-100 ${
+                  visibleElements.has("text-section") ? "fade-in" : ""
+                }`}>
                 Selamat datang kembali,
               </p>
 
               {/* Nama User Dinamis */}
-              <h1 className="text-4xl lg:text-6xl font-extrabold uppercase tracking-wide leading-tight">
+              <h1
+                className={`text-4xl lg:text-6xl font-extrabold uppercase tracking-wide leading-tight fade-in animation-delay-200 ${
+                  visibleElements.has("text-section") ? "fade-in" : ""
+                }`}>
                 {user?.name ? (
                   <>
                     <span className="block">
@@ -393,7 +525,10 @@ export default function HomeUser() {
                 )}
               </h1>
 
-              <p className="mt-6 text-base lg:text-lg text-gray-200 max-w-xl leading-relaxed">
+              <p
+                className={`mt-6 text-base lg:text-lg text-gray-200 max-w-xl leading-relaxed fade-in animation-delay-300 ${
+                  visibleElements.has("text-section") ? "fade-in" : ""
+                }`}>
                 Mari terhubung kembali dengan teman sejawat, menjaga hubungan
                 dengan almamater, dan menjalin jaringan yang kuat. Bersama-sama,
                 mari kita terus menginspirasi.
@@ -402,7 +537,10 @@ export default function HomeUser() {
               {/* Menu Cepat (Quick Access) */}
               <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg">
                 <Link href="/alumni">
-                  <div className="bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group">
+                  <div
+                    className={`bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group fade-in animation-delay-400 ${
+                      visibleElements.has("text-section") ? "fade-in" : ""
+                    }`}>
                     <h3 className="font-bold text-white group-hover:text-yellow-300">
                       Cari Alumni →
                     </h3>
@@ -412,7 +550,10 @@ export default function HomeUser() {
                   </div>
                 </Link>
                 <Link href="/jobs">
-                  <div className="bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group">
+                  <div
+                    className={`bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group fade-in animation-delay-500 ${
+                      visibleElements.has("text-section") ? "fade-in" : ""
+                    }`}>
                     <h3 className="font-bold text-white group-hover:text-yellow-300">
                       Lowongan Kerja →
                     </h3>
@@ -422,11 +563,50 @@ export default function HomeUser() {
                   </div>
                 </Link>
               </div>
+
+              {/* Admin Action Buttons */}
+              {user?.accountType === "admin" && (
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg">
+                  <Link href="/newsandevents">
+                    <div className="bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group">
+                      <h3 className="font-bold text-white group-hover:text-yellow-300">
+                        Tambah Berita →
+                      </h3>
+                      <p className="text-xs text-gray-300 mt-1">
+                        Tambahkan berita terbaru.
+                      </p>
+                    </div>
+                  </Link>
+
+                  <Link href="/newsletter">
+                    <div className="bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-lg cursor-pointer transition-all group">
+                      <h3 className="font-bold text-white group-hover:text-yellow-300">
+                        Tambah Newsletter →
+                      </h3>
+                      <p className="text-xs text-gray-300 mt-1">
+                        Kelola edisi newsletter.
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              )}
             </section>
 
             {/* --- BAGIAN KANAN: KARTU PROFIL --- */}
-            <aside className="flex justify-center lg:justify-end lg:pt-12">
-              <div className="w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-gray-200">
+            <aside
+              className={`flex justify-center lg:justify-end lg:pt-12 fade-in-right ${
+                visibleElements.has("profile-card") ? "" : ""
+              }`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "profile-card";
+                  observeElement("profile-card", { current: el });
+                }
+              }}>
+              <div
+                className={`w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300 border border-gray-200 fade-in-scale ${
+                  visibleElements.has("profile-card") ? "fade-in-scale" : ""
+                }`}>
                 {/* Foto Profil Area */}
                 <div className="p-8 bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
                   <div className="w-40 h-40 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden border-4 border-white relative">
@@ -489,82 +669,8 @@ export default function HomeUser() {
         </div>
       </main>
 
-      {/* --- ABOUT SECTION (Dari Desain Awal) --- */}
-      <div
-        id="about-section"
-        className="w-full bg-gradient-to-b from-blue-50 to-white py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            {/* Kolom Kiri: Teks About */}
-            <div className="flex-1">
-              <div className="mb-6">
-                <span className="text-blue-600 font-bold text-xs tracking-widest uppercase bg-blue-100 px-3 py-1 rounded-full">
-                  APA YANG KAMI BERIKAN?
-                </span>
-              </div>
-
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
-                <span className="text-[#1E3A8A]">Tentang Kami</span>
-              </h2>
-
-              <p className="text-gray-600 text-lg leading-relaxed mb-8 max-w-2xl">
-                Portal Alumni ini didirikan sebagai wadah untuk menjaga hubungan
-                antara alumni, universitas, dan mahasiswa saat ini. Tujuan kami
-                adalah memfasilitasi interaksi dan kolaborasi antara alumni,
-                berbagi pengalaman, informasi karir, dan membangun jejaring yang
-                bermanfaat.
-              </p>
-
-              {/* Info Kontak */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 hover:shadow-md transition-shadow">
-                <p className="text-gray-800 font-bold mb-4 text-lg">
-                  Info lebih lanjut silahkan menghubungi :
-                </p>
-                <div className="space-y-3 text-gray-600">
-                  <p className="flex items-center gap-3">
-                    <span className="text-green-500 font-bold bg-green-50 rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                      ✓
-                    </span>
-                    (+62) 812 5358 4528
-                  </p>
-                  <p className="flex items-center gap-3">
-                    <span className="text-green-500 font-bold bg-green-50 rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                      ✓
-                    </span>
-                    (+62) 812 4327 8997
-                  </p>
-                  <div className="border-t border-gray-100 my-3"></div>
-                  <p className="flex items-center gap-3 mt-3">
-                    <span className="font-semibold text-gray-800">
-                      E-mail :
-                    </span>
-                    <a
-                      href="mailto:informatika@unhas.ac.id"
-                      className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
-                      informatika@unhas.ac.id
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Kolom Kanan: Gambar */}
-            <div className="flex-1 w-full">
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative group h-[400px]">
-                <Image
-                  src="/kampus03.png" // Pastikan gambar ini ada
-                  alt="Universitas Hasanuddin"
-                  width={600}
-                  height={400}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  unoptimized
-                />
-                <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors duration-500"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* ABOUT SECTION*/}
+      <AboutUs />
     </div>
   );
 }

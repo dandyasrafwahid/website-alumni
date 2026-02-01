@@ -34,6 +34,58 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Animasi untuk halaman Jobs */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out 0.2s both;
+}
+
+.animate-slide-up-delay {
+  animation: slide-up 0.8s ease-out 0.4s both;
+}
+
+.animate-slide-up-delay-2 {
+  animation: slide-up 0.8s ease-out 0.6s both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out 0.3s both;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

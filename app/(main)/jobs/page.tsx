@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 
@@ -82,6 +82,8 @@ export default function JobsPage() {
   const [allJobs, setAllJobs] = useState<JobPosting[]>(defaultJobs);
   const [filteredJobs, setFilteredJobs] = useState(defaultJobs);
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const filterJobs = (term: string, source: JobPosting[]) => {
     const normalized = term.trim().toLowerCase();
@@ -119,6 +121,50 @@ export default function JobsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Setup Intersection Observer untuk animasi fade-in
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cardId = parseInt(
+              entry.target.getAttribute("data-card-id") || "0",
+            );
+            setVisibleCards((prev) => new Set(prev).add(cardId));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Observe cards ketika filteredJobs berubah
+  useEffect(() => {
+    const cards = document.querySelectorAll(".job-card");
+    cards.forEach((card) => {
+      if (observerRef.current) {
+        observerRef.current.observe(card);
+      }
+    });
+
+    return () => {
+      cards.forEach((card) => {
+        if (observerRef.current) {
+          observerRef.current.unobserve(card);
+        }
+      });
+    };
+  }, [filteredJobs]);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
@@ -134,7 +180,7 @@ export default function JobsPage() {
           <Navbar />
 
           {/* --- HERO SECTION (Updated Style) --- */}
-          <div className="relative bg-[#1E3A8A] pt-32 pb-24 overflow-hidden">
+          <div className="relative bg-[#1E3A8A] pt-32 pb-24 overflow-hidden animate-fade-in">
             {/* Background Image Overlay */}
             <div className="absolute inset-0 opacity-20 pointer-events-none">
               <Image
@@ -148,16 +194,16 @@ export default function JobsPage() {
 
             {/* Content */}
             <div className="container mx-auto px-6 relative z-10 text-center lg:text-left">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-slide-up">
                 Job Vacancy
               </h1>
-              <p className="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed mb-6">
+              <p className="text-blue-100 text-lg md:text-xl max-w-3xl leading-relaxed mb-6 animate-slide-up-delay">
                 Temukan info terkini tentang lowongan pekerjaan di portal
                 alumni.
               </p>
 
               {/* Link CDC UNHAS (Disesuaikan dengan style baru) */}
-              <p className="text-blue-200 text-base md:text-lg">
+              <p className="text-blue-200 text-base md:text-lg animate-slide-up-delay-2">
                 Jelajahi peluang kerja lainnya di{" "}
                 <span className="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1 rounded text-white font-semibold transition-colors cursor-pointer backdrop-blur-sm">
                   CDC UNHAS
@@ -185,7 +231,7 @@ export default function JobsPage() {
             {/* Added bg-gray-50 to match wave color */}
             <div className="max-w-7xl mx-auto w-full px-4 md:px-8 lg:px-16 py-12">
               {/* Search Bar */}
-              <div className="mb-12">
+              <div className="mb-12 animate-fade-in-up">
                 <div className="relative">
                   <input
                     type="text"
@@ -212,11 +258,21 @@ export default function JobsPage() {
               {/* Job Cards Grid */}
               {filteredJobs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-16">
-                  {filteredJobs.map((job) => (
+                  {filteredJobs.map((job, index) => (
                     <button
                       key={job.id}
+                      data-card-id={job.id}
                       onClick={() => setSelectedJob(job)}
-                      className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-300 text-left">
+                      className={`job-card group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-300 text-left ${
+                        visibleCards.has(job.id)
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-8"
+                      }`}
+                      style={{
+                        transition:
+                          "opacity 0.6s ease-out, transform 0.6s ease-out",
+                        transitionDelay: `${(index % 2) * 0.1}s`,
+                      }}>
                       <div className="flex flex-col h-full">
                         {/* Image Container */}
                         <div className="relative w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">

@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Plus, X, Save } from "lucide-react";
 
 // --- TIPE DATA ---
@@ -70,6 +70,8 @@ export default function NewsEventsPage() {
     image: null as File | null,
   });
   const [imagePreview, setImagePreview] = useState("");
+  const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Load user and news data
   useEffect(() => {
@@ -95,6 +97,50 @@ export default function NewsEventsPage() {
       setNewsData(NEWS_DATA);
     }
   }, []);
+
+  // Setup Intersection Observer untuk animasi fade-in
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const cardId = parseInt(
+              entry.target.getAttribute("data-card-id") || "0",
+            );
+            setVisibleCards((prev) => new Set(prev).add(cardId));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  // Observe cards ketika newsData berubah
+  useEffect(() => {
+    const cards = document.querySelectorAll(".news-card");
+    cards.forEach((card) => {
+      if (observerRef.current) {
+        observerRef.current.observe(card);
+      }
+    });
+
+    return () => {
+      cards.forEach((card) => {
+        if (observerRef.current) {
+          observerRef.current.unobserve(card);
+        }
+      });
+    };
+  }, [newsData, searchTerm]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -181,7 +227,7 @@ export default function NewsEventsPage() {
 
       {/* --- HERO SECTION --- */}
       {/* Background biru tua dengan judul dan deskripsi */}
-      <div className="relative bg-[#1E3A8A] pt-32 pb-32 overflow-hidden">
+      <div className="relative bg-[#1E3A8A] pt-32 pb-32 overflow-hidden animate-fade-in">
         {/* Overlay Gambar Background (Opsional) */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <Image
@@ -193,10 +239,10 @@ export default function NewsEventsPage() {
         </div>
 
         <div className="container mx-auto px-6 relative z-10 text-center lg:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 animate-slide-up">
             News & Events
           </h1>
-          <p className="text-blue-100 text-lg">
+          <p className="text-blue-100 text-lg animate-slide-up-delay">
             Dapatkan info terkini tentang berita dan acara terbaru di portal
             alumni.
           </p>
@@ -375,7 +421,7 @@ export default function NewsEventsPage() {
         )}
 
         {/* Search Bar */}
-        <div className="max-w-3xl mx-auto mb-16 relative">
+        <div className="max-w-3xl mx-auto mb-16 relative animate-fade-in-up">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <svg
@@ -413,7 +459,9 @@ export default function NewsEventsPage() {
             featuredNews.tags.some((tag) =>
               tag.toLowerCase().includes(searchTerm.toLowerCase()),
             )) && (
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row mb-16 border border-gray-100">
+            <div
+              className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row mb-16 border border-gray-100 news-card animate-slide-up-delay-2"
+              data-card-id={featuredNews.id}>
               {/* Image Side */}
               <div className="md:w-1/2 h-64 md:h-auto relative">
                 <Image
@@ -461,14 +509,23 @@ export default function NewsEventsPage() {
                   tag.toLowerCase().includes(searchTerm.toLowerCase()),
                 ),
             )
-            .map((item) => (
+            .map((item, index) => (
               <div
                 key={item.id}
+                data-card-id={item.id}
                 onClick={() => {
                   setSelectedNews(item);
                   setShowDetailModal(true);
                 }}
-                className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-gray-100 flex flex-col cursor-pointer hover:scale-[1.02]">
+                className={`news-card bg-white rounded-xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-gray-100 flex flex-col cursor-pointer hover:scale-[1.02] ${
+                  visibleCards.has(item.id)
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-8"
+                }`}
+                style={{
+                  transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+                  transitionDelay: `${(index % 3) * 0.1}s`,
+                }}>
                 {/* Card Image */}
                 <div className="h-56 relative w-full">
                   <Image

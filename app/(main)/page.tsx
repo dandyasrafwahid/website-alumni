@@ -6,14 +6,26 @@ import TentangAlumniIcon from "@/components/icons/TentangAlumniIcon";
 
 // Import Navbar komponen
 import Navbar from "@/components/Navbar";
+import AboutUs from "@/components/about";
 
 // Next.js components
 import Image from "next/image";
 import Link from "next/link"; // Import Link untuk navigasi
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const [visibleElements, setVisibleElements] = useState<Set<string>>(
+    new Set(),
+  );
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Data Statistik Alumni
+  const [statsData] = useState({
+    alumniConnected: 1500,
+    companies: 450,
+    employmentRate: 92,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +35,33 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Fade-in/Reveal Effect dengan Intersection Observer
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleElements((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+    );
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const observeElement = (id: string, ref: React.RefObject<HTMLElement>) => {
+    if (ref.current && observerRef.current) {
+      ref.current.id = id;
+      observerRef.current.observe(ref.current);
+    }
+  };
   // Data Mockup Singkat untuk Tampilan Home
   const homeNewsletters = [
     {
@@ -53,6 +92,107 @@ export default function Home() {
 
   return (
     <div className="drawer">
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes bentoPop {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .fade-in {
+          animation: fadeInUp 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-scale {
+          animation: fadeInScale 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .fade-in-right {
+          animation: fadeInRight 0.8s ease-out forwards;
+          opacity: 0;
+        }
+
+        .bento-item {
+          animation: bentoPop 0.7s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animation-delay-100 {
+          animation-delay: 0.1s;
+        }
+
+        .animation-delay-200 {
+          animation-delay: 0.2s;
+        }
+
+        .animation-delay-300 {
+          animation-delay: 0.3s;
+        }
+
+        .animation-delay-400 {
+          animation-delay: 0.4s;
+        }
+
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
 
       <div
@@ -80,22 +220,31 @@ export default function Home() {
               }}>
               {/* Kolom teks kiri */}
               <div
-                className="flex flex-col flex-1 gap-y-10 lg:gap-y-16 text-center lg:text-left"
+                className={`flex flex-col flex-1 gap-y-10 lg:gap-y-16 text-center lg:text-left fade-in-left ${visibleElements.has("hero-text") ? "fade-in-left" : ""}`}
                 style={{
                   transform: `translateY(${scrollY * 0.2}px)`,
+                }}
+                ref={(el) => {
+                  if (el) {
+                    el.id = "hero-text";
+                    observeElement("hero-text", { current: el as HTMLElement });
+                  }
                 }}>
-                <span className="font-bold text-4xl lg:text-5xl transition-all duration-300 ease-out text-white">
+                <span
+                  className={`font-bold text-4xl lg:text-5xl transition-all duration-300 ease-out text-white fade-in animation-delay-100 ${visibleElements.has("hero-text") ? "fade-in" : ""}`}>
                   Website Resmi <br /> Alumni Teknik Informatika Universitas
                   Hasanuddin
                 </span>
 
-                <span className="font-medium text-lg lg:text-xl text-white opacity-90">
+                <span
+                  className={`font-medium text-lg lg:text-xl text-white opacity-90 fade-in animation-delay-200 ${visibleElements.has("hero-text") ? "fade-in" : ""}`}>
                   Sarana komunikasi dan kolaborasi alumni, mahasiswa, dan
                   civitas akademika dalam mewujudkan kontribusi nyata di bidang
                   teknologi dan pendidikan.
                 </span>
 
-                <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                <div
+                  className={`flex flex-col sm:flex-row gap-6 justify-center lg:justify-start fade-in animation-delay-300 ${visibleElements.has("hero-text") ? "fade-in" : ""}`}>
                   <Link
                     href="/alumni"
                     className="bg-white rounded-md px-6 py-4 text-black font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform">
@@ -103,37 +252,61 @@ export default function Home() {
                     <span>Lihat Daftar Alumni</span>
                   </Link>
 
-                  <button className="border border-white rounded-md px-6 py-4 text-white font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform hover:bg-white/10">
+                  <a
+                    href="#about-section"
+                    className="border border-white rounded-md px-6 py-4 text-white font-medium text-lg lg:text-xl flex items-center justify-center gap-2 hover:scale-105 transition-transform hover:bg-white/10 cursor-pointer">
                     <TentangAlumniIcon className="text-white" width={32} />
                     <span>Tentang Alumni</span>
-                  </button>
+                  </a>
                 </div>
               </div>
 
               {/* Kolom kanan — statistik dengan parallax lebih kuat */}
               <div
-                className="flex flex-1 items-center justify-center w-full"
+                className={`flex flex-1 items-center justify-center w-full fade-in-right animation-delay-400 ${visibleElements.has("hero-stats") ? "fade-in-right" : ""}`}
                 style={{
                   transform: `translateY(${scrollY * 0.4}px)`,
+                }}
+                ref={(el) => {
+                  if (el) {
+                    el.id = "hero-stats";
+                    observeElement("hero-stats", {
+                      current: el as HTMLElement,
+                    });
+                  }
                 }}>
-                <div className="bg-[#354E96]/30 flex flex-col sm:flex-row rounded-2xl p-8 lg:p-16 gap-8 lg:gap-16 hover:scale-105 transition-transform text-center w-full justify-center backdrop-blur-sm border border-white/20">
-                  <div className="flex flex-col items-center">
-                    <span className="text-white font-bold text-3xl">1K+</span>
-                    <span className="text-white font-normal text-base">
-                      Alumni Terhubung
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-white font-bold text-3xl">450+</span>
-                    <span className="text-white font-normal text-base">
-                      Perusahaan
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-white font-bold text-3xl">92%</span>
-                    <span className="text-white font-normal text-base">
-                      Alumni Bekerja
-                    </span>
+                <div className="bg-[#354E96]/30 rounded-2xl p-6 lg:p-10 w-full backdrop-blur-sm border border-white/20">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div
+                      className="bento-item col-span-1 sm:col-span-2 bg-white/10 rounded-2xl p-6 flex flex-col items-center text-center border border-white/15 shadow-lg"
+                      style={{ animationDelay: "0.05s" }}>
+                      <span className="text-white font-bold text-4xl">
+                        {(statsData.alumniConnected / 1000).toFixed(1)}K+
+                      </span>
+                      <span className="text-white font-normal text-base mt-1">
+                        Alumni Terhubung
+                      </span>
+                    </div>
+                    <div
+                      className="bento-item bg-white/10 rounded-2xl p-5 flex flex-col items-center text-center border border-white/15"
+                      style={{ animationDelay: "0.15s" }}>
+                      <span className="text-white font-bold text-3xl">
+                        {statsData.companies}+
+                      </span>
+                      <span className="text-white font-normal text-base mt-1">
+                        Perusahaan
+                      </span>
+                    </div>
+                    <div
+                      className="bento-item bg-white/10 rounded-2xl p-5 flex flex-col items-center text-center border border-white/15"
+                      style={{ animationDelay: "0.25s" }}>
+                      <span className="text-white font-bold text-3xl">
+                        {statsData.employmentRate}%
+                      </span>
+                      <span className="text-white font-normal text-base mt-1">
+                        Alumni Bekerja
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,7 +319,14 @@ export default function Home() {
           {/* 1. BAGIAN KARTU INFO (Dana Abadi & Survei) */}
           <div className="max-w-7xl mx-auto px-6 space-y-10">
             {/* Kartu Dana Abadi */}
-            <section className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch border border-gray-100">
+            <section
+              className={`bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch border border-gray-100 fade-in-scale ${visibleElements.has("dana-abadi") ? "fade-in-scale" : ""}`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "dana-abadi";
+                  observeElement("dana-abadi", { current: el as HTMLElement });
+                }
+              }}>
               <div className="lg:w-2/3 p-10 md:p-16 flex flex-col justify-center">
                 <h2 className="text-2xl lg:text-3xl font-bold text-gray-800">
                   Dana Abadi Untuk Unhas Maju
@@ -175,7 +355,14 @@ export default function Home() {
             </section>
 
             {/* Kartu Survei */}
-            <section className="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch border border-gray-100">
+            <section
+              className={`bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row items-stretch border border-gray-100 fade-in-scale animation-delay-200 ${visibleElements.has("survei") ? "fade-in-scale" : ""}`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "survei";
+                  observeElement("survei", { current: el as HTMLElement });
+                }
+              }}>
               <div className="lg:w-1/3 relative shrink-0 order-2 lg:order-1">
                 <div className="h-56 md:h-auto lg:h-full w-full overflow-hidden">
                   <Image
@@ -206,7 +393,16 @@ export default function Home() {
 
           {/* 2. BAGIAN NEWS & EVENTS */}
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+            <h2
+              className={`text-3xl font-bold text-center text-gray-800 mb-8 fade-in ${visibleElements.has("news-section") ? "fade-in" : ""}`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "news-section";
+                  observeElement("news-section", {
+                    current: el as HTMLElement,
+                  });
+                }
+              }}>
               News and Events
             </h2>
             <div className="flex flex-row gap-8 pb-4 overflow-x-auto scrollbar-hide">
@@ -275,14 +471,32 @@ export default function Home() {
 
           {/* 3. BAGIAN NEWSLETTER (BARU DITAMBAHKAN) */}
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+            <h2
+              className={`text-3xl font-bold text-center text-gray-800 mb-8 fade-in ${visibleElements.has("newsletter-section") ? "fade-in" : ""}`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "newsletter-section";
+                  observeElement("newsletter-section", {
+                    current: el as HTMLElement,
+                  });
+                }
+              }}>
               Newsletter
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {homeNewsletters.map((item) => (
+              {homeNewsletters.map((item, index) => (
                 <div
                   key={item.id}
-                  className="relative group rounded-xl overflow-hidden shadow-lg aspect-[3/4] cursor-pointer">
+                  className={`relative group rounded-xl overflow-hidden shadow-lg aspect-[3/4] cursor-pointer fade-in-scale ${visibleElements.has(`newsletter-${item.id}`) ? "fade-in-scale" : ""}`}
+                  style={{ animationDelay: `${(index % 4) * 100}ms` }}
+                  ref={(el) => {
+                    if (el) {
+                      el.id = `newsletter-${item.id}`;
+                      observeElement(`newsletter-${item.id}`, {
+                        current: el as HTMLElement,
+                      });
+                    }
+                  }}>
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -309,7 +523,16 @@ export default function Home() {
 
           {/* 4. BAGIAN JOBS (BARU DITAMBAHKAN) */}
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+            <h2
+              className={`text-3xl font-bold text-center text-gray-800 mb-8 fade-in ${visibleElements.has("jobs-section") ? "fade-in" : ""}`}
+              ref={(el) => {
+                if (el) {
+                  el.id = "jobs-section";
+                  observeElement("jobs-section", {
+                    current: el as HTMLElement,
+                  });
+                }
+              }}>
               Jobs and Vacancy
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -373,50 +596,7 @@ export default function Home() {
           </div>
 
           {/* 5. BAGIAN ABOUT US (Scroll Target) */}
-          <div
-            id="about-section"
-            className="w-full bg-gradient-to-b from-blue-50 to-white py-16 px-6 rounded-xl">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
-              <div className="flex-1">
-                <span className="text-blue-600 font-bold text-sm tracking-widest uppercase bg-blue-100 px-3 py-1 rounded-full">
-                  APA YANG KAMI BERIKAN?
-                </span>
-                <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8 mt-4 leading-tight">
-                  <span className="text-blue-600">Tentang Kami</span>
-                </h2>
-                <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                  Portal Alumni ini didirikan sebagai wadah untuk menjaga
-                  hubungan antara alumni...
-                </p>
-                {/* Kontak Info */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                  <p className="text-gray-800 font-bold mb-3">
-                    Info lebih lanjut silahkan menghubungi :
-                  </p>
-                  <p className="text-gray-600 text-sm flex items-center gap-2">
-                    ✓ (+62) 812 5358 4528
-                  </p>
-                  <p className="text-gray-600 text-sm flex items-center gap-2 mt-2">
-                    ✓ (+62) 812 4327 8997
-                  </p>
-                  <p className="text-gray-600 text-sm flex items-center gap-2 mt-4 font-semibold">
-                    E-mail :{" "}
-                    <span className="text-blue-600">
-                      informatika@unhas.ac.id
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex-1 w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl relative">
-                <Image
-                  src="/kampus03.png"
-                  alt="Unhas"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
+          <AboutUs />
         </div>
       </div>
 

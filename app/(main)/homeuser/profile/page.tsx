@@ -938,14 +938,15 @@ export default function ViewProfilePage() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <div className="relative bg-[#0F3555] pt-32 pb-24 overflow-hidden">
-        {/* Background Overlay */}
+      <div className="relative bg-[#1E3A8A] pt-32 pb-24 overflow-hidden">
+        {/* Background Image Overlay */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <Image
-            src="/DSC09820.JPG"
+            src="/halaman.png"
             alt="bg-texture"
             fill
             className="object-cover grayscale"
+            priority
           />
         </div>
 

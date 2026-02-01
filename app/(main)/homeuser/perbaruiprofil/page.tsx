@@ -340,10 +340,10 @@ export default function EditProfilePage() {
       <Navbar />
 
       {/* --- HERO SECTION --- */}
-      <div className="relative bg-[#0F3555] pt-32 pb-24 overflow-hidden">
+      <div className="relative bg-[#1E3A8A] pt-32 pb-24 overflow-hidden">
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           <Image
-            src="/DSC09820.JPG"
+            src="/halaman.png"
             alt="bg-texture"
             fill
             className="object-cover grayscale"
@@ -722,7 +722,7 @@ export default function EditProfilePage() {
         </div>
 
         {/* --- GLOBAL BUTTONS (Simpan / Batal) --- */}
-        <div className="mt-16 flex justify-end gap-6 border-t border-gray-300 pt-8 pb-4">
+        <div className="mt-16 flex justify-end gap-6 pt-8 pb-4">
           <button
             onClick={() => router.push("/homeuser")}
             className="px-8 py-3 bg-white border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-bold rounded-lg transition-colors shadow-sm text-sm tracking-wide">
