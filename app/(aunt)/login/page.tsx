@@ -75,6 +75,7 @@ export default function Login() {
                 width={60}
                 height={60}
                 priority
+                className="drop-shadow-lg"
               />
             </div>
             <h1 className="text-4xl font-bold text-red-500 mb-2">
@@ -145,11 +146,11 @@ export default function Login() {
           <div className="mt-8 text-center space-y-2">
             <p className="text-gray-400 text-sm">
               Lupa kata sandi Anda?{" "}
-              <a
-                href="#"
+              <Link
+                href="/reset-password"
                 className="text-blue-400 hover:text-blue-300 font-semibold">
                 Reset Password
-              </a>
+              </Link>
             </p>
             <p className="text-gray-400 text-sm">
               Tidak punya akun? {/* 2. MENGGUNAKAN LINK UNTUK PINDAH HALAMAN */}
@@ -164,8 +165,7 @@ export default function Login() {
       </div>
 
       {/* Right Side - Image & Gradient */}
-      <div className="hidden lg:flex w-1/2 relative overflow-hidden">
-        {/* Decorative Shapes */}
+      <div className="hidden lg:flex w-1/2 relative h-screen sticky top-0 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
             src="/kampus03.png"
@@ -178,24 +178,19 @@ export default function Login() {
         </div>
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-linear-to-t opacity-70"></div>
-
-        {/* Navigation Arrows */}
-        <button className="absolute left-6 top-1/2 -translate-y-1/2 text-white text-3xl hover:bg-black/20 p-3 rounded-full transition">
-          ❮
-        </button>
-        <button className="absolute right-6 top-1/2 -translate-y-1/2 text-white text-3xl hover:bg-black/20 p-3 rounded-full transition">
-          ❯
-        </button>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
         {/* Center Content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-          <div className="text-center">
-            <h2 className="text-5xl font-bold mb-4">SELAMAT DATANG KANDA</h2>
-            <p className="text-xl opacity-90">
-              Alumni Teknik Informatika Universitas Hasanuddin
-            </p>
-          </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-12 z-10 text-center">
+          <h2 className="text-5xl font-bold mb-6 drop-shadow-lg leading-tight">
+            SELAMAT DATANG
+            <br />
+            <span className="text-red-500">KANDA</span>
+          </h2>
+          <p className="text-xl text-gray-200 font-light max-w-lg">
+            Portal Alumni Teknik Informatika Universitas Hasanuddin untuk
+            mempererat silaturahmi dan membangun koneksi profesional.
+          </p>
         </div>
       </div>
     </div>
