@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Plus, X, Save } from "lucide-react";
+import RichTextEditor from "@/components/RichTextEditor";
 
 // --- TIPE DATA ---
 interface NewsItem {
@@ -276,9 +277,12 @@ export default function NewsEventsPage() {
 
         {/* Modal Form */}
         {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-24 overflow-y-auto">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-8 mt-4 animate-fadeIn">
-              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 flex justify-between items-center rounded-t-2xl z-10">
+          <div className="fixed top-16 left-0 right-0 bottom-0 backdrop-blur-lg z-40 flex items-center justify-center px-4 overflow-y-auto animate-fadeIn">
+            <div
+              className="absolute inset-0 bg-black/30"
+              onClick={() => setShowModal(false)}></div>
+            <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[calc(100vh-5rem)] my-4 relative z-10 animate-fadeIn overflow-hidden flex flex-col">
+              <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 flex justify-between items-center z-20 flex-shrink-0">
                 <h2 className="text-2xl font-bold text-white">
                   ✨ Tambah Berita & Acara
                 </h2>
@@ -291,7 +295,7 @@ export default function NewsEventsPage() {
 
               <form
                 onSubmit={handleSubmit}
-                className="p-8 space-y-6 max-h-[calc(90vh-80px)] overflow-y-auto">
+                className="p-8 space-y-6 overflow-y-auto flex-1">
                 <div>
                   <label className="block text-sm font-bold text-gray-800 mb-2">
                     📰 Judul Berita *
@@ -311,14 +315,13 @@ export default function NewsEventsPage() {
                   <label className="block text-sm font-bold text-gray-800 mb-2">
                     📝 Deskripsi *
                   </label>
-                  <textarea
+                  <RichTextEditor
                     value={formData.desc}
-                    onChange={(e) =>
-                      setFormData({ ...formData, desc: e.target.value })
+                    onChange={(value) =>
+                      setFormData({ ...formData, desc: value })
                     }
-                    rows={6}
-                    className="w-full px-4 py-3 text-gray-900 font-medium border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 resize-none"
                     placeholder="Tuliskan deskripsi lengkap berita atau acara..."
+                    minHeight="250px"
                   />
                 </div>
 

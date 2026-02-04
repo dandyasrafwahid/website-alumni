@@ -60,13 +60,25 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="flex min-h-screen relative">
+      {/* Background Image untuk keseluruhan halaman */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/halaman.png"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-[#1E3A8A] opacity-95"></div>
+      </div>
+
       {/* Left Side - Form Registrasi */}
       {/* Menggunakan h-screen dan overflow-y-auto agar bisa discroll terpisah dari gambar */}
-      <div className="w-full lg:w-1/2 flex flex-col h-screen overflow-y-auto px-8 py-12 lg:px-16 scrollbar-hide">
-        <div className="max-w-md mx-auto w-full">
+      <div className="w-full lg:w-1/2 flex flex-col h-screen overflow-y-auto px-8 py-12 lg:px-16 scrollbar-hide relative z-10">
+        <div className="max-w-md mx-auto w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
           {/* Logo & Header */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <Image
                 src="/unhas-logo.png"
@@ -74,13 +86,13 @@ export default function Register() {
                 width={70}
                 height={70}
                 priority
-                className="drop-shadow-lg"
+                className="drop-shadow-2xl"
               />
             </div>
-            <h1 className="text-3xl font-bold text-red-600 mb-2 tracking-wide">
+            <h1 className="text-3xl font-bold text-white mb-2 tracking-wide">
               Daftar Alumni
             </h1>
-            <p className="text-gray-400 text-sm font-light">
+            <p className="text-gray-200 text-sm font-light">
               Lengkapi data diri Anda untuk bergabung
             </p>
           </div>
@@ -89,7 +101,7 @@ export default function Register() {
           <form onSubmit={handleRegister} className="space-y-5">
             {/* Nama Input */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2 font-medium">
+              <label className="block text-white text-sm mb-2 font-medium">
                 Nama Lengkap
               </label>
               <input
@@ -98,7 +110,7 @@ export default function Register() {
                 value={formData.nama}
                 onChange={handleChange}
                 placeholder="Masukkan Nama Lengkap"
-                className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
+                className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
                 required
               />
             </div>
@@ -106,7 +118,7 @@ export default function Register() {
             {/* NIM & No HP Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-gray-300 text-sm mb-2 font-medium">
+                <label className="block text-white text-sm mb-2 font-medium">
                   NIM
                 </label>
                 <input
@@ -115,12 +127,12 @@ export default function Register() {
                   value={formData.nim}
                   onChange={handleChange}
                   placeholder="Contoh: D121..."
-                  className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
+                  className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
                   required
                 />
               </div>
               <div>
-                <label className="block text-gray-300 text-sm mb-2 font-medium">
+                <label className="block text-white text-sm mb-2 font-medium">
                   No HP / WA
                 </label>
                 <input
@@ -129,7 +141,7 @@ export default function Register() {
                   value={formData.noHp}
                   onChange={handleChange}
                   placeholder="08xxxxxxxxxx"
-                  className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
+                  className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
                   required
                 />
               </div>
@@ -137,7 +149,7 @@ export default function Register() {
 
             {/* Email Input */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2 font-medium">
+              <label className="block text-white text-sm mb-2 font-medium">
                 Email
               </label>
               <input
@@ -146,14 +158,14 @@ export default function Register() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="nama@email.com"
-                className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition shadow-sm"
+                className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
                 required
               />
             </div>
 
             {/* Status Dropdown */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2 font-medium">
+              <label className="block text-white text-sm mb-2 font-medium">
                 Status Saat Ini
               </label>
               <div className="relative">
@@ -161,7 +173,7 @@ export default function Register() {
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-500 transition appearance-none cursor-pointer shadow-sm"
+                  className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition appearance-none cursor-pointer shadow-sm"
                   required>
                   <option value="" disabled>
                     -- Pilih Status --
@@ -186,7 +198,7 @@ export default function Register() {
 
             {/* Password Input */}
             <div>
-              <label className="block text-gray-300 text-sm mb-2 font-medium">
+              <label className="block text-white text-sm mb-2 font-medium">
                 Password
               </label>
               <PasswordToggle
@@ -194,7 +206,7 @@ export default function Register() {
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Buat Password"
-                className="focus:ring-red-500"
+                className="focus:ring-yellow-400"
                 required={true}
               />
             </div>
@@ -203,19 +215,19 @@ export default function Register() {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg hover:shadow-red-900/50">
+                className="w-full py-3.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]">
                 Daftar Sekarang
               </button>
             </div>
           </form>
 
           {/* Link to Login */}
-          <div className="mt-8 text-center pb-8">
-            <p className="text-gray-400 text-sm">
+          <div className="mt-6 text-center">
+            <p className="text-gray-200 text-sm">
               Sudah punya akun?{" "}
               <Link
                 href="/login"
-                className="text-red-400 hover:text-red-300 font-semibold underline decoration-transparent hover:decoration-red-300 transition-all">
+                className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
                 Masuk disini
               </Link>
             </p>
@@ -230,24 +242,24 @@ export default function Register() {
           <Image
             src="/kampus03.png"
             alt="kampus03"
-            width={1200} // Menggunakan width eksplisit
-            height={800} // Menggunakan height eksplisit
-            className="object-cover w-full h-full opacity-80"
+            width={1200}
+            height={800}
+            className="object-cover w-full h-full opacity-40"
             priority
           />
         </div>
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1E3A8A]/80 via-blue-900/60 to-[#1E3A8A]/80"></div>
 
         {/* Center Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-12 z-10 text-center">
-          <h2 className="text-5xl font-bold mb-6 drop-shadow-lg leading-tight">
+          <h2 className="text-5xl font-bold mb-6 drop-shadow-2xl leading-tight">
             KELUARGA BESAR
             <br />
-            <span className="text-red-500">TEKNIK INFORMATIKA</span>
+            <span className="text-yellow-300">TEKNIK INFORMATIKA</span>
           </h2>
-          <p className="text-xl text-gray-200 font-light max-w-lg">
+          <p className="text-xl text-gray-100 font-light max-w-lg drop-shadow-lg">
             Bergabunglah untuk mempererat silaturahmi dan membangun koneksi
             profesional antar alumni Universitas Hasanuddin.
           </p>

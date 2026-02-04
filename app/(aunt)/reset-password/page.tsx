@@ -21,25 +21,38 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex relative">
+      {/* Background Image untuk keseluruhan halaman */}
+      <div className="absolute inset-0 w-full h-full">
+        <Image
+          src="/halaman.png"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-[#1E3A8A] opacity-95"></div>
+      </div>
+
       {/* Left Side - Form Reset Password */}
-      <div className="w-full lg:w-1/2 bg-black flex flex-col justify-center px-8 py-12 lg:px-16">
-        <div className="max-w-md mx-auto w-full">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10">
+        <div className="max-w-md mx-auto w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
           {/* Logo & Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <div className="flex justify-center mb-4">
               <Image
                 src="/unhas-logo.png"
                 alt="Unhas Logo"
-                width={60}
-                height={60}
+                width={70}
+                height={70}
                 priority
+                className="drop-shadow-2xl"
               />
             </div>
-            <h1 className="text-4xl font-bold text-red-500 mb-2">
+            <h1 className="text-3xl font-bold text-white mb-2">
               Portal Alumni
             </h1>
-            <p className="text-gray-300 text-base">
+            <p className="text-gray-200 text-sm">
               Selamat datang di Portal Alumni Teknik Informatika
             </p>
           </div>
@@ -47,7 +60,7 @@ export default function ResetPassword() {
           {!isSubmitted ? (
             <>
               {/* Informasi */}
-              <div className="mb-6 text-gray-300 text-sm">
+              <div className="mb-6 text-gray-200 text-sm">
                 <p>
                   Lupa kata sandi Anda? Tidak masalah. Beri tahu kami alamat
                   Email Anda dan kami akan mengirimkan Email berisi Link
@@ -60,7 +73,7 @@ export default function ResetPassword() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email Input */}
                 <div>
-                  <label className="block text-gray-300 text-sm mb-2">
+                  <label className="block text-white font-medium text-sm mb-2">
                     Email
                   </label>
                   <input
@@ -68,7 +81,7 @@ export default function ResetPassword() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Masukkan email Anda"
-                    className="w-full px-4 py-3 bg-white rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
                     required
                   />
                 </div>
@@ -76,37 +89,37 @@ export default function ResetPassword() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition duration-300 cursor-pointer">
+                  className="w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]">
                   Kirim Link Pengaturan Ulang Kata Sandi
                 </button>
               </form>
 
               {/* Back to Login Link */}
-              <div className="mt-8 text-center">
+              <div className="mt-6 text-center">
                 <Link
                   href="/login"
-                  className="text-gray-400 hover:text-gray-300 text-sm transition-colors">
+                  className="text-gray-200 hover:text-yellow-300 text-sm transition-colors font-medium">
                   ← Kembali ke Login
                 </Link>
               </div>
             </>
           ) : (
             /* Success Message */
-            <div className="bg-green-500/20 border border-green-500 rounded-lg p-6 text-center">
+            <div className="bg-green-500/20 border-2 border-green-400 rounded-xl p-6 text-center">
               <div className="text-green-400 text-5xl mb-4">✓</div>
               <h3 className="text-xl font-semibold text-white mb-2">
                 Link Berhasil Dikirim!
               </h3>
-              <p className="text-gray-300 text-sm">
+              <p className="text-gray-200 text-sm">
                 Kami telah mengirimkan link pengaturan ulang kata sandi ke email{" "}
-                <span className="font-semibold text-white">{email}</span>
+                <span className="font-semibold text-yellow-300">{email}</span>
               </p>
-              <p className="text-gray-400 text-xs mt-4">
+              <p className="text-gray-300 text-xs mt-4">
                 Silakan cek inbox atau folder spam Anda
               </p>
               <Link
                 href="/login"
-                className="inline-block mt-6 text-blue-400 hover:text-blue-300 font-semibold">
+                className="inline-block mt-6 text-yellow-300 hover:text-yellow-200 font-semibold underline">
                 Kembali ke Login
               </Link>
             </div>
@@ -122,20 +135,20 @@ export default function ResetPassword() {
             alt="kampus03"
             width={1200}
             height={800}
-            className="object-cover w-full h-full opacity-80"
+            className="object-cover w-full h-full opacity-40"
             priority
           />
         </div>
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1E3A8A]/80 via-blue-900/60 to-[#1E3A8A]/80"></div>
 
         {/* Center Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-12 z-10 text-center">
-          <h2 className="text-5xl font-bold mb-6 drop-shadow-lg leading-tight">
-            <span className="text-red-500">RESET PASSWORD</span>
+          <h2 className="text-5xl font-bold mb-6 drop-shadow-2xl leading-tight">
+            <span className="text-yellow-300">RESET PASSWORD</span>
           </h2>
-          <p className="text-xl text-gray-200 font-light max-w-lg">
+          <p className="text-xl text-gray-100 font-light max-w-lg drop-shadow-lg">
             Pulihkan akses Anda dengan mudah. Kami siap membantu Anda kembali
             terhubung dengan keluarga besar Teknik Informatika.
           </p>

@@ -332,8 +332,15 @@ export default function AlumniPage() {
 
           {/* Detail Modal */}
           {showDetailModal && selectedAlumni && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8 animate-fadeIn">
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+              onClick={() => {
+                setShowDetailModal(false);
+                setSelectedAlumni(null);
+              }}>
+              <div
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-8 animate-fadeIn"
+                onClick={(event) => event.stopPropagation()}>
                 {/* Header */}
                 <div className="relative bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-8 flex justify-between items-start rounded-t-2xl">
                   <div className="text-white">
