@@ -13,13 +13,13 @@ export default function Register() {
 
   // State untuk menampung data form
   const [formData, setFormData] = useState({
-    nama: "",
+    name: "",
     nim: "",
-    noHp: "",
+    no_wa: "",
     email: "",
     status: "",
     password: "",
-    accountType: "user",
+    role: "USER",
   });
 
   // Handler untuk perubahan input
@@ -30,33 +30,29 @@ export default function Register() {
   };
 
   // Handler untuk submit form
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.nim.trim()) {
-      alert("NIM harus diisi");
-      return;
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        router.push("/login");
+      } else {
+        alert(data.message);
+        alert(`Registration failed: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
     }
-
-    console.log("Data Registrasi Dikirim:", formData);
-
-    localStorage.setItem(
-      "alumniUser",
-      JSON.stringify({
-        name: formData.nama,
-        nim: formData.nim,
-        email: formData.email,
-        accountType: "user",
-        initials: formData.nama
-          .split(" ")
-          .map((n) => n[0]?.toUpperCase() || "")
-          .slice(0, 2)
-          .join(""),
-      }),
-    );
-
-    alert("Registrasi Berhasil! Silakan Login.");
-    router.push("/login");
   };
 
   return (
@@ -106,8 +102,8 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                name="nama"
-                value={formData.nama}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 placeholder="Masukkan Nama Lengkap"
                 className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
@@ -136,9 +132,9 @@ export default function Register() {
                   No HP / WA
                 </label>
                 <input
-                  type="tel"
-                  name="noHp"
-                  value={formData.noHp}
+                  type="text"
+                  name="no_wa"
+                  value={formData.no_wa}
                   onChange={handleChange}
                   placeholder="08xxxxxxxxxx"
                   className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition shadow-sm"
@@ -174,7 +170,8 @@ export default function Register() {
                   value={formData.status}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/90 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition appearance-none cursor-pointer shadow-sm"
-                  required>
+                  required
+                >
                   <option value="" disabled>
                     -- Pilih Status --
                   </option>
@@ -189,7 +186,8 @@ export default function Register() {
                   <svg
                     className="fill-current h-4 w-4"
                     xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20">
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                   </svg>
                 </div>
@@ -215,7 +213,8 @@ export default function Register() {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-3.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]">
+                className="w-full py-3.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]"
+              >
                 Daftar Sekarang
               </button>
             </div>
@@ -227,7 +226,8 @@ export default function Register() {
               Sudah punya akun?{" "}
               <Link
                 href="/login"
-                className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
+                className="text-yellow-300 hover:text-yellow-200 font-semibold underline"
+              >
                 Masuk disini
               </Link>
             </p>

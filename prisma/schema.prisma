@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  name       String
+  nim        String       @unique
+  no_wa      String 
+  email      String 
+  status     String 
+  role       Role         
+  password   String 
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  alumni     Alumni?
+  pekerjaan  Pekerjaan[]
+  pendidikan Pendidikan[]
+
+  @@map("users")
+}
+
+model Alumni {
+  id           Int     @id @default(autoincrement())
+  name         String?
+  nim          String?
+  email        String?
+  gender       String?
+  no_wa        String?
+  tmpt_tinggal String?
+  user_id      Int?    @unique
+  user         User?   @relation(fields: [user_id], references: [id])
+
+  @@map("alumni")
+}
+
+model Pendidikan {
+  id            Int     @id @default(autoincrement())
+  jenjang       String?
+  thn_masuk     String?
+  thn_lulus     String?
+  universitas   String?
+  fakultas      String?
+  prodi         String?
+  pendidikan_id Int?
+  user          User?   @relation(fields: [pendidikan_id], references: [id])
+
+  @@map("pendidikan")
+}
+
+model Pekerjaan {
+  id              Int     @id @default(autoincrement())
+  nama_perusahaan String?
+  jabatan         String?
+  alamat          String?
+  industri        String?
+  thn_masuk       String?
+  thn_keluar      String?
+  pekerjaan_id    Int?
+  user            User?   @relation(fields: [pekerjaan_id], references: [id])
+
+  @@map("pekerjaan")
+}
+
+model Loker {
+  id              Int     @id @default(autoincrement())
+  judul           String?
+  deskripsi       String?
+  nama_perusahaan String?
+  industri        String?
+  alamat          String?
+  tgl_terbit      String?
+  tgl_kadaluarsa  String?
+
+  @@map("loker")
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+  judul     String?
+  createdAt DateTime @default(now())
+  author    String?
+  deskripsi String?
+
+  @@map("news")
+}
+
