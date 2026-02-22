@@ -13,51 +13,21 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Get existing user data from localStorage if available
-    let existingUser: any = {};
-    try {
-      const storedData = localStorage.getItem("alumniUser");
-      if (storedData) {
-        existingUser = JSON.parse(storedData);
-      }
-    } catch {
-      // ignore
-    }
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    // Determine account type based on email
-    const accountType =
-      email.trim().toLowerCase() === "admin@alumni.id" ? "admin" : "user";
-
-    // Save user info to localStorage with account type
-    const name = email.trim() || "Alumni User";
-    const initials = name
-      .split(" ")
-      .map((n) => n[0]?.toUpperCase() || "")
-      .slice(0, 2)
-      .join("");
-
-    try {
-      localStorage.setItem(
-        "alumniUser",
-        JSON.stringify({
-          name: name,
-          email: email,
-          initials: initials,
-          accountType: accountType,
-          nip: accountType === "admin" ? existingUser.nip || "" : "",
-        }),
-      );
-    } catch {
-      // ignore storage errors
-    }
-
-    // Redirect berdasarkan account type
-    if (accountType === "admin") {
+    const data = await res.json();
+    if (res.ok) {
+      console.log("Login successful");
       router.push("/homeuser");
     } else {
-      router.push("/homeuser");
+      console.error("Login failed:", data);
+      alert(data.error || "Login failed");
     }
   };
 
@@ -143,7 +113,8 @@ export default function Login() {
               />
               <label
                 htmlFor="remember"
-                className="ml-2 text-white text-sm cursor-pointer">
+                className="ml-2 text-white text-sm cursor-pointer"
+              >
                 Ingat saya
               </label>
             </div>
@@ -151,7 +122,8 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]">
+              className="w-full py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-[#1E3A8A] font-bold rounded-lg transition duration-300 cursor-pointer shadow-lg transform hover:scale-[1.02]"
+            >
               Masuk
             </button>
           </form>
@@ -162,7 +134,8 @@ export default function Login() {
               Lupa kata sandi Anda?{" "}
               <Link
                 href="/reset-password"
-                className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
+                className="text-yellow-300 hover:text-yellow-200 font-semibold underline"
+              >
                 Reset Password
               </Link>
             </p>
@@ -170,7 +143,8 @@ export default function Login() {
               Tidak punya akun?{" "}
               <Link
                 href="/register"
-                className="text-yellow-300 hover:text-yellow-200 font-semibold underline">
+                className="text-yellow-300 hover:text-yellow-200 font-semibold underline"
+              >
                 Daftar
               </Link>
             </p>

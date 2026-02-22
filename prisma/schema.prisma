@@ -16,8 +16,8 @@ model User {
   id         Int          @id @default(autoincrement())
   name       String
   nim        String       @unique
-  no_wa      String 
-  email      String 
+  no_wa      String       
+  email      String       @unique
   status     String 
   role       Role         
   password   String 
